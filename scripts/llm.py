@@ -147,12 +147,13 @@ def generate(prompt: str, system: str, *, purpose: str, temperature: float = 0,
 
 
 def per_call_estimate(purpose: str, default_mean: float, default_max: float, min_rows: int = 2) -> tuple[float, float]:
-    """(mean, max) cost per call from this project's own log once it has min_rows calls of this purpose."""
+    """(mean, max) cost per call: the mean from this project's own log once it has min_rows calls of this
+    purpose; the max never below the default, since a handful of measured calls understates the tail."""
     rows = usage_rows(purpose)
     if len(rows) < min_rows:
         return default_mean, default_max
     costs = [float(r["cost_usd"]) for r in rows]
-    return sum(costs) / len(costs), max(costs)
+    return sum(costs) / len(costs), max(max(costs), default_max)
 
 
 def n_calls(n_items: int, per_call: int) -> int:

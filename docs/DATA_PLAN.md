@@ -84,12 +84,28 @@ chunk at ~2.2 tokens per word, measured on kvkk-rag's answer calls) and ~600 out
 - `confirm_spend` refuses a run whose upper estimate would cross the budget, so gate 3 runs in batches
   (e.g. `--limit 300`). After the pilot, estimates use this project's measured mean and max.
 
-## Pilot (gate 2), after approval
+## Pilot (gate 2), run 2026-10-10
 
 ```
-python scripts/gen_questions.py --limit 10      # 2 calls: one corpus chunk, one guide chunk
+python scripts/gen_questions.py --limit 10      # 2 calls: c029 (kanun, Madde 24-25), g01-091 (lawyers' guide)
 python scripts/gen_rewrites.py --limit 10       # 10 calls
 ```
 
-Check: question quality by hand (everyday wording, answerable from the chunk, no legal terms copied),
-leakage flags and their scores, real tokens and cost per call (`results/llm_usage.csv`) against this table.
+Files: `data/questions_v1.jsonl`, `data/rewrites_v1.jsonl`, `results/llm_usage.csv`. Spent: **$0.0364**.
+
+| | estimated per call | measured per call |
+|---|---|---|
+| question generation (LOW thinking) | $0.0029 (850 in / 600 out) | $0.0012 (~718 in / ~175 out) |
+| teacher rewrite | $0.0032 | $0.0034 mean, $0.0054 max (~240 in / ~860 out); p50 latency 6.7 s |
+
+- Teacher: input and output tokens match kvkk-rag's cached rewrites (216-245 input tokens there), and the
+  rewrites read the same: legal terms ("ilgili kişi", "açık rıza", "veri sorumlusu"), 1-2 sentences, ~19 words.
+- Questions: everyday wording, scenarios, answerable from the chunk in 9 of 10 (g01-091_2 asks whether it is
+  a crime; the chunk only gives the legal basis). Weak spots: no short or sloppy question although the prompt
+  asks for some; c029 is about the Kurum's organisation (who deputises for the president), which real users
+  rarely ask; c029_2 copies "veri sorumluları sicil".
+- Leakage filter: 0 of 10 flagged; max e5 cosine 0.889 (nearest q023), 3-gram Jaccard 0 for all. By hand, no
+  question is a paraphrase of an eval question, but g01-091 states the same principle as q023's evidence
+  (no consent is needed when another processing condition applies): the topic-level risk described above.
+- Full run, re-estimated with the measured means (max per call kept at least at the default): 221 more
+  generation calls $0.26 + 990 rewrites $3.36 = **$3.63** expected (upper $6.71), $3.67 project total.
