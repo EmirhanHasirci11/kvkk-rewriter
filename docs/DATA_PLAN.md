@@ -144,3 +144,16 @@ Pilot data: the 5 pairs from c029 (now an admin chunk) are not used for training
 Full run, re-estimated: 995 more pairs. Prompt v2 may return fewer than 5 questions per chunk; at an assumed
 4 kept per call, ~276 generation calls x $0.0012 = $0.33, plus 995 rewrites x $0.0034 = $3.38:
 **~$3.7 expected**, ~$3.75 project total with the pilot.
+
+### Prompt v2 check (2 calls, $0.0026)
+
+Chunks c020 (kanun, Madde 20-21) and g01-133 (lawyers' guide, generative AI): 9 questions, 0 flagged, $0.0013 per
+call. Two of the nine are sloppy as asked ("kvkk kurulu uyelerini kim seciyor cumhurbaskani mi meclis mi",
+"yapay zekaya sirket evragi yuklemek verileri yurtdisina gondermek sayilirmi"); the AI-upload questions read
+like real ones. Weak spot: c020 keeps Madde 21 (Kurul membership) because the chunk also covers Madde 20, and
+two of its questions ask who can become a Kurul member, which few users would; with 17 corpus chunks out of
+~250 calls this is left as is.
+Nearest eval question for three AI questions is a011 (held-out abstention: training an own AI model on
+customer data), cosine up to 0.894: related topic, different question. The abstention sets are not part of
+this project's metrics; if they are used later, note that the training data covers AI tools while the
+retrieval corpus does not.
