@@ -122,6 +122,36 @@ def request_config(system: str, temperature: float = 0, thinking_level: str | No
         automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True), **kw)
 
 
+RETRIES = 6
+
+
+def _transient(e: Exception) -> bool:
+    """Network drops, rate limits and server errors; a bad request or a bad key is not retried."""
+    import httpx
+    from google.genai import errors
+    if isinstance(e, (httpx.TransportError, ConnectionError, TimeoutError)):
+        return True
+    return isinstance(e, errors.APIError) and (e.code == 429 or (e.code or 0) >= 500)
+
+
+def _send_with_retry(prompt: str, config):
+    """generate_content with exponential backoff (2, 4, ... 64 s) on transient errors. Latency is that of the
+    successful attempt. A request whose connection dropped may still have been processed (and billed) by the
+    server without a usage row here, so the log can slightly undercount after a retry."""
+    for attempt in range(RETRIES + 1):
+        t0 = time.perf_counter()
+        try:
+            resp = _get_client().models.generate_content(model=MODEL, contents=prompt, config=config)
+            return resp, time.perf_counter() - t0
+        except Exception as e:
+            if attempt == RETRIES or not _transient(e):
+                raise
+            wait = 2 ** (attempt + 1)
+            print(f"  transient error ({type(e).__name__}: {str(e)[:120]}); retry {attempt + 1}/{RETRIES} in {wait}s",
+                  flush=True)
+            time.sleep(wait)
+
+
 def generate(prompt: str, system: str, *, purpose: str, temperature: float = 0,
              thinking_level: str | None = None, json_output: bool = False) -> dict:
     """{"text", "input_tokens", "output_tokens", "cost_usd", "latency_s"}."""
@@ -130,9 +160,7 @@ def generate(prompt: str, system: str, *, purpose: str, temperature: float = 0,
         raise BudgetExceeded(f"LLM budget reached: ${spent:.4f} of ${BUDGET_USD:.2f} spent, see {USAGE_CSV.name}")
 
     config = request_config(system, temperature, thinking_level, json_output)
-    t0 = time.perf_counter()
-    resp = _get_client().models.generate_content(model=MODEL, contents=prompt, config=config)
-    latency = time.perf_counter() - t0
+    resp, latency = _send_with_retry(prompt, config)
     u = resp.usage_metadata
     input_tokens = u.prompt_token_count or 0
     output_tokens = (u.candidates_token_count or 0) + (u.thoughts_token_count or 0)
