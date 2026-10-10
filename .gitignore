@@ -26,3 +26,6 @@ wandb/
 
 # generation-only source PDFs (text in gen_corpus/text is committed)
 gen_corpus/raw/
+
+# run logs
+logs/
