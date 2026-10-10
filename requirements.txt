@@ -1,0 +1,4 @@
+# kvkk-rag's requirements (retriever, eval, google-genai, python-dotenv), from the pinned submodule
+-r external/kvkk-rag/requirements.txt
+
+# training and small-model inference run on Colab; their requirements go with the notebooks

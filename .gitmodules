@@ -1,0 +1,3 @@
+[submodule "external/kvkk-rag"]
+	path = external/kvkk-rag
+	url = https://github.com/EmirhanHasirci11/kvkk-rag.git

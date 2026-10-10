@@ -1,0 +1,35 @@
+{
+  "thresholds": {
+    "ngram_n": 3,
+    "ngram_max": 0.3,
+    "cosine_max": 0.92
+  },
+  "n_eval_questions": 85,
+  "nearest_other_eval_cosine": {
+    "p10": 0.8543,
+    "p50": 0.8814,
+    "p90": 0.9117,
+    "p99": 0.9279,
+    "max": 0.9279
+  },
+  "nearest_other_eval_ngram_jaccard": {
+    "p10": 0.0,
+    "p50": 0.0,
+    "p90": 0.0,
+    "p99": 0.1111,
+    "max": 0.1111
+  },
+  "most_similar_eval_pair": [
+    "Silinmesi gereken verileri en geç kaç ayda bir temizlemeliyiz?",
+    "Küçük bir şirketiz, saklama politikamız yok. Silinmesi gereken veriyi ne zamana kadar silmeliyiz?",
+    0.9279
+  ],
+  "question_vs_own_teacher_rewrite_cosine": {
+    "p10": 0.8521,
+    "p50": 0.891,
+    "p90": 0.9176,
+    "p99": 0.9338,
+    "max": 0.9348
+  },
+  "eval_questions_flagged_vs_other_eval": 4
+}

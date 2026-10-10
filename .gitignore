@@ -1,0 +1,25 @@
+# secrets: never committed
+.env
+.env.*
+
+# python
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# model weights, adapters, checkpoints (Colab / Drive / Hugging Face Hub, not git)
+models/
+checkpoints/
+outputs/
+adapters/
+runs/
+wandb/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+*.onnx
+*.h5
