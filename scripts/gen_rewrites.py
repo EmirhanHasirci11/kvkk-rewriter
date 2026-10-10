@@ -51,7 +51,8 @@ def main():
     out_path = kvkk_rag.ROOT / f"data/rewrites_{args.tag}.jsonl"
     if not qpath.exists():
         sys.exit(f"{qpath} not found; run scripts/gen_questions.py first")
-    questions = [q for q in map(json.loads, qpath.read_text(encoding="utf-8").splitlines()) if q and not q["leak"]]
+    questions = [q for q in map(json.loads, qpath.read_text(encoding="utf-8").splitlines())
+                 if q and q["question"] and not q["leak"]]
     done = set()
     if out_path.exists():
         done = {r["qid"] for r in map(json.loads, out_path.read_text(encoding="utf-8").splitlines()) if r}

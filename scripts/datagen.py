@@ -8,13 +8,18 @@ Exclusion (fixed before any question is generated). Eval sets: dev eval/golden.j
 eval/test_v2.jsonl (eval/test_v1.jsonl is q031-q050 of golden). A corpus chunk is dropped when
   1. it shares an 8-word sequence with any evidence sentence (or alternative) of an eval set, or
   2. any article / section label it covers equals the source label of an eval question
-     ("Madde 8-9" counts as Madde 8 and Madde 9).
+     ("Madde 8-9" counts as Madde 8 and Madde 9), or
+  3. every label it covers is an administrative article of the Kanun (ADMIN_ARTICLES: the Kurum and Kurul
+     organisation, president, staff, budget, amendments, transition, entry into force), which real users
+     do not ask about. The Kurum's and Kurul's duties (Madde 20, 22) stay. Added after the pilot.
 A gen chunk has no labels; it is dropped when
   1. as above (8-word sequence shared with eval evidence), or
   2. its e5 cosine to any eval evidence sentence ("passage: " on both sides) is >= the topic threshold, or
   3. it has fewer than MIN_WORDS words (a document's tail), or
   4. it is the first chunk of its document (cover, abbreviations, publisher notes), or
-  5. it is mostly references: REFS_MIN or more URLs / "Erişim Adresi" / "Erişim Tarihi" (footnotes).
+  5. it is mostly references: REFS_MIN or more URLs / "Erişim Adresi" / "Erişim Tarihi" (footnotes), or
+  6. its document is background, chosen by title (BACKGROUND_DOCS: the constitutional right, international
+     regulations, the need for the law, the Kurul's structure). Added after the pilot.
 Rule 2 stands in for the section rule. The threshold is defined on the corpus chunks, where both are known:
 the median topic score of the corpus chunks excluded by the section rule (so half of them would also be
 caught by rule 2). The cosine separates section-excluded from kept corpus chunks only partly; the rates are
@@ -44,6 +49,9 @@ SIZE, OVERLAP = 192, 48
 SHARED_WORDS = 8
 MIN_WORDS = 60
 REFS_MIN = 3
+ADMIN_ARTICLES = {f"Madde {n}" for n in (19, 21, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33)} | {
+    f"Geçici Madde {n}" for n in (1, 2, 3)}
+BACKGROUND_DOCS = {"g24", "g32", "g33", "g37"}
 REFS_RE = re.compile(r"https?://|Erişim (?:Adresi|Tarihi)")
 SEED = 2026
 GEN_TEXT = kvkk_rag.ROOT / "gen_corpus/text"
@@ -108,6 +116,8 @@ def split_chunks() -> tuple[list[dict], list[dict]]:
             excluded.append({**c, "reason": "evidence"})
         elif hit_labels:
             excluded.append({**c, "reason": "section " + ", ".join(hit_labels)})
+        elif c["doc"] == "kvkk_kanun_6698" and c["sections"] and set(c["sections"]) <= ADMIN_ARTICLES:
+            excluded.append({**c, "reason": "admin"})
         else:
             kept.append(c)
     return kept, excluded
@@ -146,6 +156,8 @@ def split_gen_chunks(model, topic_max: float) -> tuple[list[dict], list[dict]]:
             excluded.append({**c, "reason": "front"})
         elif len(REFS_RE.findall(c["text"])) >= REFS_MIN:
             excluded.append({**c, "reason": "references"})
+        elif c["doc"] in BACKGROUND_DOCS:
+            excluded.append({**c, "reason": "background"})
         else:
             kept.append(c)
     return kept, excluded

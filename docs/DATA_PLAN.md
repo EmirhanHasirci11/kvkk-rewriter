@@ -109,3 +109,38 @@ Files: `data/questions_v1.jsonl`, `data/rewrites_v1.jsonl`, `results/llm_usage.c
   (no consent is needed when another processing condition applies): the topic-level risk described above.
 - Full run, re-estimated with the measured means (max per call kept at least at the default): 221 more
   generation calls $0.26 + 990 rewrites $3.36 = **$3.63** expected (upper $6.71), $3.67 project total.
+
+## After the pilot: prompt v2, chunk split v2 (2026-10-10, before the full run)
+
+Goal set by the user: training questions should look like real use. Two changes, both fixed before gate 3:
+
+- **Prompt v2** (`scripts/gen_questions.py`, `PROMPT_VERSION`; every new row records it, the pilot's rows are v1):
+  questions as people type them into a KVKK assistant or a search box; a wider set of askers (job seeker,
+  student, building manager, accountant, e-commerce owner...); no quiz-style questions about the text
+  ("how many ...", "which unit ..."); everyday words instead of the legal terms; a mix of 1-3 sentence
+  situations, short direct questions and at least one sloppy one per chunk (lowercase, no punctuation, a
+  typo, or unaccented letters). The examples in the prompt are templates without a topic, so they cannot
+  steer the generator towards an eval topic. The model may return fewer questions, or none, for a passage
+  with nothing a real person would ask (a marker row records the chunk as done).
+- **Chunk split v2** (`data/chunks_v2.jsonl`, `results/chunk_split_v2.json`; v1 kept): two more rules.
+  Corpus: a chunk whose labels are all administrative articles of the Kanun (Madde 19, 21, 23-27, 29-33,
+  Geçici Madde 1-3: Kurum / Kurul organisation, president, staff, budget, amendments, transition, entry into
+  force) is dropped (15 chunks; the duties in Madde 20 and 22 stay). Guides: four background documents chosen
+  by title are dropped (g24 constitutional right, g32 international regulations, g33 need for the law,
+  g37 Kurul structure; 19 chunks).
+
+| | all | excluded | usable |
+|---|---|---|---|
+| kvkk-rag corpus | 153 | 136 (evidence 81, section 40, admin 15) | 17 |
+| KVKK guides | 1,769 | 725 (evidence 335, topic 318, references 27, front 23, background 19, short 3) | 1,044 |
+| **total** | 1,922 | 861 | **1,061** |
+
+The topic threshold is unchanged (0.8846, from the section-excluded chunks). In the v2 report its AUC against
+the kept corpus chunks is 0.66 instead of 0.78 only because the 15 admin chunks, which are far from any
+evidence, left the kept set; v1's 0.78 over 32 chunks is the better description of the rule.
+
+Pilot data: the 5 pairs from c029 (now an admin chunk) are not used for training; the 5 from g01-091 are.
+
+Full run, re-estimated: 995 more pairs. Prompt v2 may return fewer than 5 questions per chunk; at an assumed
+4 kept per call, ~276 generation calls x $0.0012 = $0.33, plus 995 rewrites x $0.0034 = $3.38:
+**~$3.7 expected**, ~$3.75 project total with the pilot.
