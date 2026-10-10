@@ -1,0 +1,290 @@
+{
+ "index": "https://www.kvkk.gov.tr/Icerik/2030/rehberler",
+ "read": "2026-10-10",
+ "skipped_in_retrieval_corpus": {
+  "6": "rehber_ozel_nitelikli",
+  "21": "rehber_veri_guvenligi"
+ },
+ "documents": [
+  {
+   "id": "g01",
+   "position": 1,
+   "title": "Avukatların Mesleki Faaliyetlerinde Kişisel Verilerin Korunmasına İlişkin Uygulama Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/MTZhYjI0ZTE1NWIwMWM.pdf",
+   "bytes": 1661918,
+   "sha256": "921fd16a59f3bdd1810085fd76ef6f35d553c8ce0266372cb39f99d04569bba9"
+  },
+  {
+   "id": "g02",
+   "position": 2,
+   "title": "Kamu Kurum ve Kuruluşları ile Kamu Kurumu Niteliğindeki Meslek Kuruluşları İçin Kişisel Verilerin Korunması Kanununa Uyum Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/MTZhNjc1YWFhNmVjOGY.pdf",
+   "bytes": 2986369,
+   "sha256": "f2577c00fccef9266c96e5d2d1c92b7bff8afdb4252f0f3a6e9bd42738df3ef4"
+  },
+  {
+   "id": "g03",
+   "position": 3,
+   "title": "Canlı Yayımlanan Reality Show Niteliğindeki Programlarda Kişisel Verilerin İşlenmesine Yönelik Rehber",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/MTZhMDMwNmYyNjU3ZWY.pdf",
+   "bytes": 2373879,
+   "sha256": "3a1a7403d6cb72062d032c56aefd13e1aaeeb44f73c2e2a33b83ea839f13f231"
+  },
+  {
+   "id": "g04",
+   "position": 4,
+   "title": "Üretken Yapay Zekâ ve Kişisel Verilerin Korunması Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/MTY5MjNmNmIwZWY3YTE.pdf",
+   "bytes": 1925172,
+   "sha256": "8738c491ba9933193c4d2144ec28938ff677239701aa850a9dfaf25256cdd90b"
+  },
+  {
+   "id": "g05",
+   "position": 5,
+   "title": "Ödeme ve Elektronik Para Sektöründe Kişisel Verilerin Korunmasına İlişkin İyi Uygulamalar Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/5a7a3f8a-3b20-4773-970a-01aecfcc5222.pdf",
+   "bytes": 95811977,
+   "sha256": "d33371f23548141adbea7858cfdff4f850ca398f8b66dc9cd2d0e63e5773eb26"
+  },
+  {
+   "id": "g07",
+   "position": 7,
+   "title": "Kişisel Verilerin Yurt Dışına Aktarılması Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/13711235-abb6-4b17-9a6b-0a68c1ad86c5.pdf",
+   "bytes": 655169,
+   "sha256": "6e109edee70f6df3fdba2d0e996032c57b98bf44f4debd56adf971228e149902"
+  },
+  {
+   "id": "g08",
+   "position": 8,
+   "title": "Seçim Faaliyetlerinde Kişisel Verilerin Korunması Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/a44a446f-43e9-434d-9426-b066fffdc349.pdf",
+   "bytes": 7328991,
+   "sha256": "e7cf069149a07b2c19b352876d99ea9402f4ae5bf7346438e2845deab405f0fa"
+  },
+  {
+   "id": "g09",
+   "position": 9,
+   "title": "Türkiye Cumhuriyeti Kimlik Numaralarının İşlenmesi Hakkında Rehber",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/a828de56-b2b2-43bf-b77d-cc05de5b2c84.pdf",
+   "bytes": 4711977,
+   "sha256": "629c449841d64c73ca262c84b525a014d4bcb681faad6dc1983081ef588e1eab"
+  },
+  {
+   "id": "g10",
+   "position": 10,
+   "title": "Mobil Uygulamalarda Mahremiyetin Korunmasına Yönelik Tavsiyeler",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/8ba209bb-fa93-4479-84f0-dd55aac97a0f.pdf",
+   "bytes": 4958519,
+   "sha256": "8651296b79989b565a0efdba565e221ada5b2e7ae310112af63213dddbe1a42c"
+  },
+  {
+   "id": "g11",
+   "position": 11,
+   "title": "Genetik Verilerin İşlenmesinde Dikkat Edilmesi Gereken Hususlara İlişkin Rehber",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/703442e0-690c-4618-91c3-83e7583170ca.pdf",
+   "bytes": 14031306,
+   "sha256": "795c03abefb423132e429c1a28c1b4f82c5a807def61bcbc01cdf00af82e82c5"
+  },
+  {
+   "id": "g12",
+   "position": 12,
+   "title": "Kişisel Verilerin Korunmasına İlişkin Bankacılık Sektörü İyi Uygulamalar Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/12236bad-8de1-4c94-aad6-bb93f53271fb.pdf",
+   "bytes": 835506,
+   "sha256": "3c6a8c9c18b604e0ea3b104579bd76397b0c5f428d843a07bb95c578374fcb78"
+  },
+  {
+   "id": "g13",
+   "position": 13,
+   "title": "Çerez Uygulamaları Hakkında Rehber",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/fb193dbb-b159-4221-8a7b-3addc083d33f.pdf",
+   "bytes": 3183503,
+   "sha256": "3bebbd0f54bae5fd8e008c183bef70a67ab363caa6541989e4e4a2c1d3d6c6ca"
+  },
+  {
+   "id": "g14",
+   "position": 14,
+   "title": "Unutulma Hakkı (Unutulma Hakkının Arama Motorları Özelinde Değerlendirilmesi)",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/11b6fd99-d42a-45b1-a009-21f2d36ded21.pdf",
+   "bytes": 4187500,
+   "sha256": "9de022ec294f5a200a4a67f5b68af6dfc31b500edb1f88551f735e2949ade81d"
+  },
+  {
+   "id": "g15",
+   "position": 15,
+   "title": "Biyometrik Verilerin İşlenmesinde Dikkat Edilmesi Gereken Hususlara İlişkin Rehber",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/bd06f5f4-e8cc-487e-abe1-d32dc18e2d7e.pdf",
+   "bytes": 12039491,
+   "sha256": "a50df590b4e5466ee387fc7c736c4de2f92e0e0cb5a6df4cb6131cb4573d9dd6"
+  },
+  {
+   "id": "g16",
+   "position": 16,
+   "title": "Yapay Zeka Alanında Kişisel Verilerin Korunmasına Dair Tavsiyeler",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/25a1162f-0e61-4a43-98d0-3e7d057ac31a.pdf",
+   "bytes": 7992814,
+   "sha256": "b89749ab8957e3ba8513910d6345c03e0264111f4b2142906dfecd5bba151375"
+  },
+  {
+   "id": "g17",
+   "position": 17,
+   "title": "Kişisel Veri İşleme Envanteri Hazırlama Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/14a17049-71da-4417-a07b-961f75a0070e.PDF",
+   "bytes": 5949992,
+   "sha256": "ba0dbfe9e87cd950828bcd6650dc4da471ffffe74277a2dcfd96fba8ed6a312e"
+  },
+  {
+   "id": "g18",
+   "position": 18,
+   "title": "Aydınlatma Yükümlülüğünün Yerine Getirilmesi Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/a569a068-c079-4189-b134-f57bc727af7d.pdf",
+   "bytes": 4655103,
+   "sha256": "b86ac5c084433edadb5f0da034dc067207b3c8250fdceb8b9fc66f698a66249b"
+  },
+  {
+   "id": "g19",
+   "position": 19,
+   "title": "100 Soruda Kişisel Verilerin Korunması Kanunu",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/185c2130-8070-4b2b-a91e-1d48322ca352.pdf",
+   "bytes": 7411906,
+   "sha256": "207c6b54bb46c259cd83c697eb0bbbef158123af9aa7161deab07693c93a5ad7"
+  },
+  {
+   "id": "g20",
+   "position": 20,
+   "title": "Kişisel Verilerin Korunması Kanununa İlişkin Uygulama Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/MTY5MjZiZWNiNjQ3N2I.pdf",
+   "bytes": 21453415,
+   "sha256": "793afa7f4f88625288fc40500ebd66634dd1d7cdafd1e57e4a90f9d3b031c554"
+  },
+  {
+   "id": "g22",
+   "position": 22,
+   "title": "Kişisel Verilerin Silinmesi, Yok Edilmesi veya Anonim Hale Getirilmesi Rehberi",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/bc1cb353-ef85-4e58-bb99-3bba31258508.pdf",
+   "bytes": 10324612,
+   "sha256": "b1ab00ba5a011289522aeef55e233ebc751e850fd871a18b1f108d56139e89e2"
+  },
+  {
+   "id": "g23",
+   "position": 23,
+   "title": "Kişisel Verilerin Korunması Kanunu Hakkında Sıkça Sorulan Sorular",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/c148901d-cd7f-43ff-ae9a-978fb78fb43c.pdf",
+   "bytes": 9065568,
+   "sha256": "f04c4348f3bfed54d225b54a7db73d6dcdcaaca8c78d2b841b4d76477f4e17c6"
+  },
+  {
+   "id": "g24",
+   "position": 24,
+   "title": "Anayasal Bir Hak Olarak Kişisel Verilerin Korunmasını İsteme Hakkı",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/28b8639c-1624-40af-ac9b-8f2551b4b2bf.pdf",
+   "bytes": 2240134,
+   "sha256": "bb091bd3c2ea4bc6a7090e89a37ce13262841f100669f893fdd08b85c073ca85"
+  },
+  {
+   "id": "g25",
+   "position": 25,
+   "title": "Kanun Kapsamındaki Hak ve Yükümlülükler",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/8662692a-80ff-49a8-9ce9-7aca5b69ccd7.pdf",
+   "bytes": 931851,
+   "sha256": "acabd82625ae8236e979dbb31c453d7aa094d26c625892a7dc8a46389bfdd4d4"
+  },
+  {
+   "id": "g26",
+   "position": 26,
+   "title": "Kişisel Verilerin İşlenme Şartları",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/9feefe58-9b0f-49c9-a0c7-2b2eb8c012bb.pdf",
+   "bytes": 1272747,
+   "sha256": "eaa47692cd925fe6ae99c9d443eac8749d22bcc63b29196e8897689ea258a56c"
+  },
+  {
+   "id": "g27",
+   "position": 27,
+   "title": "Kişisel Verilerin İşlenmesine İlişkin Temel İlkeler",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/32ff74f6-9798-405a-b3d2-b42d28423fde.pdf",
+   "bytes": 2064825,
+   "sha256": "f5887242cb523f38db5603a5e0cd96d863440e5a53429ad4ec63d084d05505e2"
+  },
+  {
+   "id": "g28",
+   "position": 28,
+   "title": "Açık Rıza",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/e3c6aa10-9de4-46f8-9b51-71bcf07c09b5.pdf",
+   "bytes": 1296204,
+   "sha256": "294f6756aa03d5eb61b111f2630cbd20613bc70eb5d80908b092d244a7ec766a"
+  },
+  {
+   "id": "g29",
+   "position": 29,
+   "title": "6698 Sayılı Kanun'da Yer Alan Temel Kavramlar",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/b414e1cf-bd67-43f1-a6f9-3bff081f92e7.pdf",
+   "bytes": 1203590,
+   "sha256": "2537e14daacfdb5d0ba8a6281a6836e6599b5cd2de7391c0c234e7f38912f9ff"
+  },
+  {
+   "id": "g30",
+   "position": 30,
+   "title": "6698 Sayılı Kanun'da Yer Alan Terimler",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/a9eb73e7-bf35-46d7-84e7-58a4618128cc.pdf",
+   "bytes": 4812773,
+   "sha256": "aeb3d5baabe6f98a241bb7dbe64354d158e1849eaa9c14c2ccec57b518c7ee6e"
+  },
+  {
+   "id": "g31",
+   "position": 31,
+   "title": "6698 Sayılı Kişisel Verilerin Korunması Kanununun Amacı ve Kapsamı",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/4d1c6565-b087-4bfb-b148-70e75b2549a5.pdf",
+   "bytes": 3632645,
+   "sha256": "787cd48a42dfba10a1d722840ae2a9c7a42737b3ed4a457c673e2b9afdfe5df1"
+  },
+  {
+   "id": "g32",
+   "position": 32,
+   "title": "Kişisel Verilerin Korunması Alanında Uluslararası ve Ulusal Düzenlemeler",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/49712b6d-655c-47e2-8c53-0c51bbef0306.pdf",
+   "bytes": 4172172,
+   "sha256": "fd372db1b9f4ce759fb8a98aced561c48d42d82fb678e340bd1b19e29588d0fb"
+  },
+  {
+   "id": "g33",
+   "position": 33,
+   "title": "Kişisel Verilerin Korunması Kanununa Duyulan İhtiyaç",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/6875e980-312d-4ed8-b2dc-9430891f2d8a.pdf",
+   "bytes": 1425237,
+   "sha256": "359ca5d13ea47f2c6da82cb72c342cc54eb27e3689aa11683e07691f57008e47"
+  },
+  {
+   "id": "g34",
+   "position": 34,
+   "title": "Veri Sorumluları Sicili",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/ed040488-ee55-40de-b503-646c8e1bc916.pdf",
+   "bytes": 939863,
+   "sha256": "1a1b2987fedeb9393fc8522940bc3c985eca74173665736c85a97f5bef07e01c"
+  },
+  {
+   "id": "g35",
+   "position": 35,
+   "title": "İlgili Kişinin Hak Arama Yöntemleri",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/353d85d5-87df-4c91-b08e-b4f0991a80f4.pdf",
+   "bytes": 863297,
+   "sha256": "3e7d7dcca2b9fb7a31155c63253cee8b544e230939ca719df79465e3d9f70640"
+  },
+  {
+   "id": "g36",
+   "position": 36,
+   "title": "Veri Sorumlusu ve Veri İşleyen",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/31d9c444-27a5-4a75-95b1-1ca9bdb81ea5.pdf",
+   "bytes": 2328796,
+   "sha256": "e02b670afda3c95e0ba91020b5a2d9704d6052e5d48848b1a139ffee6b8a5cff"
+  },
+  {
+   "id": "g37",
+   "position": 37,
+   "title": "Kişisel Verileri Koruma Kurulu'nun Yapısı ve Görevleri",
+   "url": "https://www.kvkk.gov.tr/SharedFolderServer/CMSFiles/c6206722-f4dc-484d-9bff-63f99b840158.pdf",
+   "bytes": 842345,
+   "sha256": "f803236732e55ef3ef9075df172570dc3aa05d3868deb7d1482620e8e74c3445"
+  }
+ ]
+}

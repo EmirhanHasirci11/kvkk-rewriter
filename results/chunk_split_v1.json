@@ -1,0 +1,249 @@
+{
+ "topic_threshold": 0.8846,
+ "topic_threshold_rule": "median topic score of corpus chunks excluded by the section rule",
+ "corpus_calibration": {
+  "auc_section_vs_kept": 0.78,
+  "share_at_or_above_threshold": {
+   "kept": 0.219,
+   "section": 0.5,
+   "evidence": 0.827
+  },
+  "n": {
+   "kept": 32,
+   "section": 40,
+   "evidence": 81
+  }
+ },
+ "corpus": {
+  "evidence": 81,
+  "section": 40,
+  "kept": 32
+ },
+ "gen": {
+  "front": 23,
+  "topic": 318,
+  "evidence": 335,
+  "references": 27,
+  "short": 3,
+  "kept": 1063
+ },
+ "usable_chunks": 1095,
+ "per_doc": {
+  "g01": {
+   "kept": 130,
+   "front": 1,
+   "topic": 16,
+   "evidence": 17,
+   "references": 9
+  },
+  "g02": {
+   "kept": 52,
+   "evidence": 33,
+   "topic": 50,
+   "references": 3,
+   "short": 1
+  },
+  "g03": {
+   "kept": 34,
+   "front": 1,
+   "evidence": 24,
+   "topic": 9
+  },
+  "g04": {
+   "kept": 87,
+   "front": 1,
+   "evidence": 12,
+   "topic": 17,
+   "references": 4
+  },
+  "g07": {
+   "kept": 64,
+   "front": 1,
+   "topic": 29,
+   "evidence": 18,
+   "references": 4
+  },
+  "g08": {
+   "kept": 39,
+   "front": 1,
+   "evidence": 10,
+   "topic": 3
+  },
+  "g09": {
+   "kept": 52,
+   "front": 1,
+   "topic": 2,
+   "references": 1
+  },
+  "g10": {
+   "kept": 25,
+   "front": 1,
+   "evidence": 6,
+   "topic": 3,
+   "references": 1
+  },
+  "g11": {
+   "kept": 36,
+   "evidence": 21,
+   "topic": 7
+  },
+  "g12": {
+   "kept": 174,
+   "front": 1,
+   "topic": 1,
+   "evidence": 2
+  },
+  "g13": {
+   "kept": 39,
+   "front": 1,
+   "topic": 4,
+   "evidence": 7,
+   "references": 1
+  },
+  "g14": {
+   "kept": 27,
+   "front": 1,
+   "evidence": 6
+  },
+  "g15": {
+   "kept": 10,
+   "evidence": 6,
+   "topic": 3
+  },
+  "g16": {
+   "kept": 7,
+   "front": 1,
+   "topic": 2
+  },
+  "g17": {
+   "kept": 36,
+   "front": 1,
+   "topic": 9,
+   "evidence": 2,
+   "short": 1
+  },
+  "g18": {
+   "kept": 8,
+   "topic": 12,
+   "evidence": 10
+  },
+  "g19": {
+   "kept": 34,
+   "front": 1,
+   "topic": 25,
+   "evidence": 22
+  },
+  "g20": {
+   "kept": 90,
+   "front": 1,
+   "evidence": 67,
+   "topic": 53
+  },
+  "g22": {
+   "kept": 32,
+   "topic": 8,
+   "evidence": 5,
+   "references": 4
+  },
+  "g23": {
+   "kept": 30,
+   "front": 1,
+   "evidence": 32,
+   "topic": 29
+  },
+  "g24": {
+   "kept": 2,
+   "front": 1,
+   "topic": 1
+  },
+  "g25": {
+   "kept": 1,
+   "front": 1,
+   "topic": 1,
+   "evidence": 9
+  },
+  "g26": {
+   "kept": 6,
+   "evidence": 4,
+   "topic": 2
+  },
+  "g27": {
+   "kept": 4,
+   "front": 1,
+   "topic": 6,
+   "evidence": 1
+  },
+  "g28": {
+   "kept": 1,
+   "evidence": 1,
+   "topic": 4,
+   "short": 1
+  },
+  "g29": {
+   "kept": 12,
+   "evidence": 4,
+   "topic": 7
+  },
+  "g30": {
+   "kept": 1,
+   "evidence": 5
+  },
+  "g31": {
+   "kept": 5,
+   "front": 1,
+   "topic": 3,
+   "evidence": 4
+  },
+  "g32": {
+   "kept": 6,
+   "front": 1
+  },
+  "g33": {
+   "kept": 3,
+   "front": 1
+  },
+  "g34": {
+   "topic": 3,
+   "evidence": 1
+  },
+  "g35": {
+   "kept": 4,
+   "front": 1,
+   "evidence": 2,
+   "topic": 6
+  },
+  "g36": {
+   "kept": 4,
+   "topic": 3,
+   "evidence": 1
+  },
+  "g37": {
+   "kept": 8,
+   "front": 1,
+   "evidence": 3
+  },
+  "kvkk_kanun_6698": {
+   "kept": 18,
+   "evidence": 19,
+   "section": 5
+  },
+  "rehber_ozel_nitelikli": {
+   "kept": 12,
+   "evidence": 34,
+   "section": 30
+  },
+  "rehber_veri_guvenligi": {
+   "evidence": 18,
+   "section": 2
+  },
+  "teblig_aydinlatma": {
+   "evidence": 4,
+   "section": 1
+  },
+  "yonetmelik_silme_yok_etme_anonim": {
+   "kept": 2,
+   "section": 2,
+   "evidence": 6
+  }
+ }
+}

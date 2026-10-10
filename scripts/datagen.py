@@ -1,13 +1,24 @@
 """Shared pieces of the training-data pipeline: source chunks, eval exclusion, leakage filter. No LLM call.
 
-Source chunks are kvkk-rag's retrieval chunks (192/48 words, scripts/chunking.py + scripts/sections.py),
-so every chunk carries the same doc and article / section labels the retriever uses.
+Two chunk sources, both cut 192/48 words with kvkk-rag's scripts/chunking.py:
+  corpus  kvkk-rag's retrieval chunks (ids c000-c152), with the article / section labels the retriever uses
+  gen     generation-only texts: official KVKK guides not in the retrieval corpus (gen_corpus/text, ids g05-012)
 
-Exclusion (fixed before any question is generated): a chunk is dropped when
+Exclusion (fixed before any question is generated). Eval sets: dev eval/golden.jsonl and held-out
+eval/test_v2.jsonl (eval/test_v1.jsonl is q031-q050 of golden). A corpus chunk is dropped when
   1. it shares an 8-word sequence with any evidence sentence (or alternative) of an eval set, or
   2. any article / section label it covers equals the source label of an eval question
      ("Madde 8-9" counts as Madde 8 and Madde 9).
-Eval sets: dev eval/golden.jsonl and held-out eval/test_v2.jsonl (eval/test_v1.jsonl is q031-q050 of golden).
+A gen chunk has no labels; it is dropped when
+  1. as above (8-word sequence shared with eval evidence), or
+  2. its e5 cosine to any eval evidence sentence ("passage: " on both sides) is >= the topic threshold, or
+  3. it has fewer than MIN_WORDS words (a document's tail), or
+  4. it is the first chunk of its document (cover, abbreviations, publisher notes), or
+  5. it is mostly references: REFS_MIN or more URLs / "Erişim Adresi" / "Erişim Tarihi" (footnotes).
+Rule 2 stands in for the section rule. The threshold is defined on the corpus chunks, where both are known:
+the median topic score of the corpus chunks excluded by the section rule (so half of them would also be
+caught by rule 2). The cosine separates section-excluded from kept corpus chunks only partly; the rates are
+in results/chunk_split_<tag>.json (scripts/split_chunks.py).
 
 Leakage filter (applied to every generated question): drop it when, against any question of the eval sets
 (golden, test_v1, test_v2, abstention, abstention_v2),
@@ -20,6 +31,7 @@ questions as close as the closest distinct eval pairs; it cannot separate every 
 on a nearby topic, which is why the section exclusion above comes first.
 """
 import json
+import random
 import re
 
 import kvkk_rag
@@ -30,17 +42,32 @@ from textproc import tr_lower
 
 SIZE, OVERLAP = 192, 48
 SHARED_WORDS = 8
+MIN_WORDS = 60
+REFS_MIN = 3
+REFS_RE = re.compile(r"https?://|Erişim (?:Adresi|Tarihi)")
+SEED = 2026
+GEN_TEXT = kvkk_rag.ROOT / "gen_corpus/text"
 NGRAM_N, NGRAM_MAX = 3, 0.30
 COSINE_MAX = 0.92
 EXCLUDE_SETS = (kvkk_rag.DEV, kvkk_rag.HELDOUT)
 
 
 def all_chunks() -> list[dict]:
-    """Every retrieval chunk, in the retriever's order: {"chunk_id", "doc", "text", "section", "sections"}."""
+    """Every retrieval chunk, in the retriever's order: {"chunk_id", "source", "doc", "text", "section", "sections"}."""
     out = []
     for doc, t in kvkk_rag.corpus_texts().items():
         for c, meta in zip(chunk_words(t, SIZE, OVERLAP), chunk_sections(t, SIZE, OVERLAP), strict=True):
-            out.append({"chunk_id": len(out), "doc": doc, "text": c, **meta})
+            out.append({"chunk_id": f"c{len(out):03d}", "source": "corpus", "doc": doc, "text": c, **meta})
+    return out
+
+
+def gen_chunks() -> list[dict]:
+    """Every chunk of the generation-only texts, document by document."""
+    out = []
+    for p in sorted(GEN_TEXT.glob("*.txt")):
+        for i, c in enumerate(chunk_words(p.read_text(encoding="utf-8"), SIZE, OVERLAP)):
+            out.append({"chunk_id": f"{p.stem}-{i:03d}", "source": "gen", "doc": p.stem, "text": c,
+                        "section": None, "sections": []})
     return out
 
 
@@ -72,7 +99,7 @@ def eval_exclusions() -> tuple[set[tuple[str, str]], set[tuple[str, ...]]]:
 
 
 def split_chunks() -> tuple[list[dict], list[dict]]:
-    """(kept, excluded); every excluded chunk gets a "reason"."""
+    """Corpus chunks: (kept, excluded); every excluded chunk gets a "reason"."""
     labels, grams = eval_exclusions()
     kept, excluded = [], []
     for c in all_chunks():
@@ -84,6 +111,69 @@ def split_chunks() -> tuple[list[dict], list[dict]]:
         else:
             kept.append(c)
     return kept, excluded
+
+
+def evidence_sentences() -> list[str]:
+    return [alt for path in EXCLUDE_SETS for q in load_golden(path) for alts in facts(q) for alt in alts]
+
+
+def encode_passages(model, texts: list[str]):
+    return model.encode(["passage: " + t for t in texts], normalize_embeddings=True, batch_size=16,
+                        show_progress_bar=False)
+
+
+def topic_scores(model, chunks: list[dict]):
+    """Max e5 cosine of each chunk to any eval evidence sentence."""
+    ev = encode_passages(model, evidence_sentences())
+    return (encode_passages(model, [c["text"] for c in chunks]) @ ev.T).max(1)
+
+
+def split_gen_chunks(model, topic_max: float) -> tuple[list[dict], list[dict]]:
+    """Gen chunks: (kept, excluded); every chunk gets its "topic" score, excluded ones a "reason"."""
+    _, grams = eval_exclusions()
+    chunks = gen_chunks()
+    scores = topic_scores(model, chunks)
+    kept, excluded = [], []
+    for c, score in zip(chunks, scores):
+        c = {**c, "topic": round(float(score), 4)}
+        if _word_ngrams(c["text"], SHARED_WORDS) & grams:
+            excluded.append({**c, "reason": "evidence"})
+        elif score >= topic_max:
+            excluded.append({**c, "reason": "topic"})
+        elif len(c["text"].split()) < MIN_WORDS:
+            excluded.append({**c, "reason": "short"})
+        elif c["chunk_id"].endswith("-000"):
+            excluded.append({**c, "reason": "front"})
+        elif len(REFS_RE.findall(c["text"])) >= REFS_MIN:
+            excluded.append({**c, "reason": "references"})
+        else:
+            kept.append(c)
+    return kept, excluded
+
+
+def generation_order(corpus_kept: list[dict], gen_kept: list[dict]) -> list[dict]:
+    """Corpus chunks (seeded shuffle) and gen chunks (round-robin over documents, each document seeded-shuffled)
+    alternate until the corpus chunks run out; then the rest of the gen chunks. A run cut off by --limit
+    (the pilot) still sees both sources and many documents."""
+    rng = random.Random(SEED)
+    first = corpus_kept[:]
+    rng.shuffle(first)
+    by_doc = {}
+    for c in gen_kept:
+        by_doc.setdefault(c["doc"], []).append(c)
+    queues = []
+    for doc in sorted(by_doc):
+        q = by_doc[doc][:]
+        rng.shuffle(q)
+        queues.append(q)
+    rest = []
+    while any(queues):
+        for q in queues:
+            if q:
+                rest.append(q.pop(0))
+    woven = [c for pair in zip(first, rest) for c in pair]
+    n = min(len(first), len(rest))
+    return woven + first[n:] + rest[n:]
 
 
 def eval_questions() -> list[dict]:

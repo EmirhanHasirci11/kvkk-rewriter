@@ -24,6 +24,8 @@ cached Gemini rewrites and eval code all come from it.
 - **held-out**: kvkk-rag `eval/test_v2.jsonl` (20 q). Run once, at the end, with everything frozen.
 - No training question comes from a chunk that holds dev or held-out evidence or from the same article /
   section, and every training question passes a leakage filter against all eval questions (`docs/DATA_PLAN.md`).
+- Training questions come from the usable kvkk-rag chunks plus official KVKK guides that are not in the
+  retrieval corpus (generation only; the retrieval corpus does not change).
 
 ## Rules (same as kvkk-rag)
 - A rule (adoption threshold, filter, frozen config) is written down before the run it applies to.
@@ -41,5 +43,6 @@ cached Gemini rewrites and eval code all come from it.
 ## Spending gates (each needs the user's explicit approval)
 1. Scaffold, sanity check, model shortlist, data plan: **$0**. Done.
 2. Pilot: 10 questions + 10 rewrites; check question quality, leakage filter and real cost: **~$0.05**.
-3. Full data generation (~1000-1500 pairs): **~$4-6**. Project LLM budget: $6, enforced in `scripts/llm.py`.
+3. Full data generation, 1000 pairs (decided 2026-10-10): **~$3.8** expected, $6.0 worst case.
+   Project LLM budget: $6, enforced in `scripts/llm.py`.
 4. Colab: zero-shot baseline first, then QLoRA.

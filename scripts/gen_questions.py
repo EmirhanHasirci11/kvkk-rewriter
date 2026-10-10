@@ -1,12 +1,12 @@
-"""Everyday Turkish user questions from kvkk-rag corpus chunks (data plan step 1). COSTS MONEY.
+"""Everyday Turkish user questions from source chunks (data plan step 1). COSTS MONEY.
 
 Run from the repo root: python scripts/gen_questions.py --limit N [--per-chunk 5] [--tag v1]
 
-Source chunks: kvkk-rag's retrieval chunks minus every chunk that holds dev / held-out evidence or covers
-an article / section an eval question is sourced from (scripts/datagen.py; fixed before generation).
-Chunks are visited in a fixed random order (seed 2026), one LLM call per chunk, --per-chunk (3-5) questions
-per call. --limit N is the number of questions to generate, so the run makes ceil(N / per-chunk) calls
-(pilot: --limit 10 -> 2 calls).
+Source chunks: data/chunks_<tag>.jsonl, frozen by scripts/split_chunks.py before any question exists: the
+usable kvkk-rag corpus chunks first, then chunks of the generation-only KVKK guides round-robin over
+documents (exclusion rules in scripts/datagen.py). One LLM call per chunk, in that order, --per-chunk (3-5)
+questions per call. --limit N is the number of questions to generate, so the run makes ceil(N / per-chunk)
+calls (pilot: --limit 10 -> 2 calls).
 
 The generator is not the teacher, so it may differ from it: gemini-3.8-flash, temperature 1.0 for variety,
 thinking level LOW, JSON output. Every question then goes through the leakage filter (word 3-gram Jaccard
@@ -19,7 +19,6 @@ waits for "yes".
 """
 import argparse
 import json
-import random
 import sys
 
 import datagen
@@ -27,7 +26,6 @@ import kvkk_rag
 import llm
 
 PURPOSE = "gen_questions"
-SEED = 2026
 GEN = {"temperature": 1.0, "thinking_level": "LOW", "json_output": True}
 # per-call cost before this project has measured its own: ~850 input tokens (prompt + 192-word chunk at
 # ~2.2 tokens per word, as in kvkk-rag's answer calls), ~600 output tokens with LOW thinking; max 1000 / 1500
@@ -69,17 +67,18 @@ def main():
     llm.api_key()
 
     out_path = kvkk_rag.ROOT / f"data/questions_{args.tag}.jsonl"
-    kept, excluded = datagen.split_chunks()
-    order = kept[:]
-    random.Random(SEED).shuffle(order)
+    chunks_path = kvkk_rag.ROOT / f"data/chunks_{args.tag}.jsonl"
+    if not chunks_path.exists():
+        sys.exit(f"{chunks_path} not found; run scripts/split_chunks.py first")
+    chunks = [c for c in map(json.loads, chunks_path.read_text(encoding="utf-8").splitlines()) if c]
+    order = sorted((c for c in chunks if c["keep"]), key=lambda c: c["order"])
     rows = []
     if out_path.exists():
         rows = [r for r in map(json.loads, out_path.read_text(encoding="utf-8").splitlines()) if r]
     done_chunks = {r["chunk_id"] for r in rows}
     seen = {r["question"] for r in rows}
     todo = [c for c in order if c["chunk_id"] not in done_chunks][:llm.n_calls(args.limit, args.per_chunk)]
-    print(f"chunks: {len(kept) + len(excluded)} total, {len(excluded)} excluded (eval evidence or section), "
-          f"{len(kept)} usable, {len(done_chunks)} already done")
+    print(f"chunks: {len(chunks)} total, {len(order)} usable, {len(done_chunks)} already done")
     if not todo:
         sys.exit("nothing to do: every usable chunk already has questions")
 
@@ -97,7 +96,7 @@ def main():
             if not qs:
                 print(f"[{i}/{len(todo)}] chunk {c['chunk_id']}: no parsable questions: {out['text'][:200]!r}")
             for j, (q, leak) in enumerate(zip(qs, leak_filter.check(qs) if qs else []), 1):
-                row = {"qid": f"g{c['chunk_id']:03d}_{j}", "chunk_id": c["chunk_id"], "doc": c["doc"],
+                row = {"qid": f"{c['chunk_id']}_{j}", "chunk_id": c["chunk_id"], "source": c["source"], "doc": c["doc"],
                        "section": c["section"], "sections": c["sections"], "question": q, **leak,
                        "model": llm.MODEL, **{k: v for k, v in GEN.items() if k != "json_output"}}
                 f.write(json.dumps(row, ensure_ascii=False) + "\n")

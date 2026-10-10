@@ -13,7 +13,7 @@ def test_labels_expand_ranges():
 def test_chunks_match_retriever_chunking():
     chunks = datagen.all_chunks()
     assert len(chunks) == 153     # 192/48 over the 5 documents, as in kvkk-rag
-    assert [c["chunk_id"] for c in chunks] == list(range(153))
+    assert [c["chunk_id"] for c in chunks] == [f"c{i:03d}" for i in range(153)]
 
 
 def test_no_kept_chunk_holds_eval_evidence_or_section():
@@ -32,3 +32,12 @@ def test_no_kept_chunk_holds_eval_evidence_or_section():
 def test_eval_questions_dedup():
     qs = datagen.eval_questions()
     assert len(qs) == len({q["question"] for q in qs}) == 85     # 50 golden + 20 test_v2 + 10 + 5 abstention
+
+
+def test_generation_order_alternates_sources_and_round_robins_docs():
+    corpus = [{"chunk_id": f"c{i:03d}", "doc": "kanun"} for i in range(2)]
+    gen = [{"chunk_id": f"{d}-{i:03d}", "doc": d} for d in ("g01", "g02") for i in range(2)]
+    order = datagen.generation_order(corpus, gen)
+    assert [c["doc"] for c in order] == ["kanun", "g01", "kanun", "g02", "g01", "g02"]
+    assert sorted(c["chunk_id"] for c in order) == sorted(c["chunk_id"] for c in corpus + gen)
+    assert order == datagen.generation_order(corpus, gen)     # seeded

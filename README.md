@@ -3,7 +3,8 @@
 Distilling the Gemini query-rewrite step of [kvkk-rag](https://github.com/EmirhanHasirci11/kvkk-rag) into a
 small model trained with QLoRA, and measuring its effect on retrieval, latency and cost.
 
-Status: scaffold, sanity check, model shortlist and data plan (spending gate 1, $0). Plan and rules:
+Status: spending gate 1 ($0) done: scaffold, sanity check, model shortlist, data plan, and the frozen source
+chunks for 1000 training pairs (kvkk-rag chunks + generation-only KVKK guides). Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup
@@ -26,6 +27,11 @@ once this project's total reaches $6.
 ```
 python -m pytest tests -q                   # no LLM call
 python scripts/sanity_check.py              # kvkk-rag teacher numbers from the cached rewrites, no LLM call
+
+# generation-only source texts and the frozen chunk split (no LLM call)
+python scripts/fetch_gen_corpus.py          # 35 KVKK guide PDFs -> gen_corpus/raw (git-ignored)
+python scripts/extract_gen_corpus.py        # -> gen_corpus/text
+python scripts/split_chunks.py --tag v2     # -> data/chunks_<tag>.jsonl (v1 is committed; never overwritten)
 ```
 
 ## Sanity check
