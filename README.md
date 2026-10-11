@@ -3,8 +3,8 @@
 Distilling the Gemini query-rewrite step of [kvkk-rag](https://github.com/EmirhanHasirci11/kvkk-rag) into a
 small model trained with QLoRA, and measuring its effect on retrieval, latency and cost.
 
-Status: spending gate 1 ($0) done: scaffold, sanity check, model shortlist, data plan, and the frozen source
-chunks for 1000 training pairs (kvkk-rag chunks + generation-only KVKK guides). Plan and rules:
+Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
+(966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Next: Colab. Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup

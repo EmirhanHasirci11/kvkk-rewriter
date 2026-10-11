@@ -157,3 +157,27 @@ Nearest eval question for three AI questions is a011 (held-out abstention: train
 customer data), cosine up to 0.894: related topic, different question. The abstention sets are not part of
 this project's metrics; if they are used later, note that the training data covers AI tools while the
 retrieval corpus does not.
+
+## Gate 3 result (2026-10-11): 1018 pairs, $3.995 total
+
+| | calls | cost |
+|---|---|---|
+| question generation (pilot + v2 check + 2 batches) | 224 | $0.30 |
+| teacher rewrites | 1,023 | $3.69 |
+| **project total** (`results/llm_usage.csv`) | 1,247 | **$3.995** |
+
+- Questions: 1,018 trainable (v2 prompt, plus the 5 pilot v1 questions from g01-091); 3 dropped by the
+  leakage filter, each a near-paraphrase of an eval question (q053 held-out 0.923, q006 dev 0.939, a003 0.928);
+  3 chunks returned no realistic question. 4.6 questions per chunk.
+- Rewrites: 1,023 (incl. the 5 pilot pairs from c029, not used). Mean $0.0036 per call, p99 $0.0074; one
+  outlier at $0.0147 (3,877 thinking tokens), which made the budget guard split the run into batches.
+  Mean latency 7.4 s. One run died on a dropped connection (no row lost); `llm.py` now retries transient
+  errors. One run was stopped by Claude Code for low system memory and resumed.
+- **Training set** (`scripts/build_pairs.py` -> `data/pairs_v1.jsonl`, `results/pairs_v1_summary.json`):
+  1,018 pairs, 966 train / 52 val (val = 5% of the 220 chunks, no chunk in both), 32 documents,
+  943 from guides / 75 from corpus chunks; questions 15.6 words, rewrites 23.8 words; 22% sloppy questions.
+- Teacher behaviour to know: 105 rewrites (10%) add "6698 sayılı Kanun", the only number ever added. It
+  follows from the question: when the question says "kvkk" the teacher expands it in 53% of cases, otherwise
+  in 3%. The kvkk-rag eval questions almost never say "kvkk" (2 of 85; 1 cached rewrite adds 6698), the
+  generated ones often do (151 of 1,018). The pairs are kept as the teacher wrote them: the student is
+  meant to copy the teacher.

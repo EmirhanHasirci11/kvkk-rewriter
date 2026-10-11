@@ -43,6 +43,7 @@ cached Gemini rewrites and eval code all come from it.
 ## Spending gates (each needs the user's explicit approval)
 1. Scaffold, sanity check, model shortlist, data plan: **$0**. Done.
 2. Pilot: 10 questions + 10 rewrites; check question quality, leakage filter and real cost: **~$0.05**.
+   Done: $0.036 (+ $0.003 for the prompt v2 check).
 3. Full data generation, 1000 pairs (decided 2026-10-10): **~$3.8** expected, $6.0 worst case.
-   Project LLM budget: $6, enforced in `scripts/llm.py`.
+   Project LLM budget: $6, enforced in `scripts/llm.py`. Done 2026-10-11: 1,018 pairs, $3.995 project total.
 4. Colab: zero-shot baseline first, then QLoRA.

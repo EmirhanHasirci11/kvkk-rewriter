@@ -1,0 +1,22 @@
+{
+ "pairs": 1018,
+ "split": {
+  "train": 966,
+  "val": 52
+ },
+ "chunks": 220,
+ "docs": 32,
+ "by_source": {
+  "gen": 943,
+  "corpus": 75
+ },
+ "dropped": {
+  "chunk not usable in v2": 5,
+  "leak": 3
+ },
+ "mean_words": {
+  "question": 15.6,
+  "rewrite": 23.8
+ },
+ "sloppy_question_share": 0.224
+}
