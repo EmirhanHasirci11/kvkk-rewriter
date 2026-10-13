@@ -1,0 +1,45 @@
+{
+  "gpu": "NVIDIA L4",
+  "commit": "4d08b4b38a30374dda0c102531d6941f8f398e0b",
+  "torch": "2.11.0+cu130",
+  "transformers": "5.18.0",
+  "max_new_tokens": 256,
+  "models": {
+    "qwen3-4b": {
+      "hf_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "load_s": 51.4,
+      "stop_ids": [
+        151645
+      ],
+      "peak_gpu_gb": 8.17,
+      "latency_p50_s": 4.633,
+      "latency_p95_s": 7.24,
+      "truncated": 1
+    },
+    "kumru-2b": {
+      "hf_id": "vngrs-ai/Kumru-2B",
+      "load_s": 29.0,
+      "stop_ids": [
+        3,
+        261
+      ],
+      "peak_gpu_gb": 4.79,
+      "latency_p50_s": 0.73,
+      "latency_p95_s": 2.135,
+      "truncated": 0
+    },
+    "llama3.1-8b": {
+      "hf_id": "meta-llama/Llama-3.1-8B-Instruct",
+      "load_s": 68.9,
+      "stop_ids": [
+        128001,
+        128009
+      ],
+      "peak_gpu_gb": 16.17,
+      "latency_p50_s": 3.265,
+      "latency_p95_s": 6.961,
+      "truncated": 1
+    }
+  },
+  "wall_min": 10.7
+}

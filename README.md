@@ -4,8 +4,8 @@ Distilling the Gemini query-rewrite step of [kvkk-rag](https://github.com/Emirha
 small model trained with QLoRA, and measuring its effect on retrieval, latency and cost.
 
 Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
-(966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Next: gate 4a, zero-shot
-baseline on Colab L4 (Qwen3-4B-Instruct-2507, Kumru-2B, Llama-3.1-8B-Instruct; `notebooks/01_zeroshot.ipynb`). Plan and rules:
+(966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Gate 4a (zero-shot
+baseline, Colab L4) done, see below. Next: QLoRA. Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup
@@ -43,6 +43,25 @@ python scripts/eval_rewrites.py results/rewrites_<name>.jsonl   # dev retrieval,
 
 `scripts/eval_rewrites.py` on kvkk-rag's cached teacher rewrites gives the sanity-check dev numbers exactly
 (`results/eval_teacher_dev_v1_summary.csv`).
+
+## Zero-shot baseline (gate 4a, dev, 50 q)
+
+kvkk-rag's rewrite prompt, each model's chat template, bf16, greedy, on a Colab L4 (`notebooks/01_zeroshot.ipynb`,
+`results/eval_zs_*_dev_v1_summary.csv`). Latency is per question on the L4; the teacher's is not comparable
+(API, with thinking).
+
+| System | rw R@5 | rw R@10 | fuse R@5 | fuse R@10 | latency p50 / p95 |
+|---|---|---|---|---|---|
+| no rewrite (orig) | 0.64 | 0.73 | | | |
+| Gemini teacher | 0.75 | 0.78 | 0.71 | 0.81 | |
+| Qwen3-4B-Instruct-2507 | 0.42 | 0.72 | 0.67 | 0.77 | 4.6 / 7.5 s |
+| Kumru-2B | 0.44 | 0.60 | 0.55 | 0.67 | 0.7 / 2.2 s |
+| Llama-3.1-8B-Instruct | 0.49 | 0.58 | 0.59 | 0.69 | 3.2 / 7.8 s |
+
+Zero-shot, all three break the prompt's rules: they mostly answer the question instead of rewriting it, often
+with numbers that are not in the question ("30 gün", "3 ay"), and their outputs are longer than the teacher's
+(median 249 / 148 / 215 characters vs 143). Kumru-2B also echoes the question or the prompt's rules. Only
+Qwen3-4B's fuse (0.67) is above no rewrite (0.64), within noise.
 
 ## Sanity check
 
