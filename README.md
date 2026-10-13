@@ -4,7 +4,8 @@ Distilling the Gemini query-rewrite step of [kvkk-rag](https://github.com/Emirha
 small model trained with QLoRA, and measuring its effect on retrieval, latency and cost.
 
 Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
-(966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Next: Colab. Plan and rules:
+(966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Next: gate 4a, zero-shot
+baseline on Colab L4 (Qwen3-4B-Instruct-2507, Kumru-2B, Llama-3.1-8B-Instruct; `notebooks/01_zeroshot.ipynb`). Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup
@@ -33,6 +34,15 @@ python scripts/fetch_gen_corpus.py          # 35 KVKK guide PDFs -> gen_corpus/r
 python scripts/extract_gen_corpus.py        # -> gen_corpus/text
 python scripts/split_chunks.py --tag v2     # -> data/chunks_<tag>.jsonl (v1 is committed; never overwritten)
 ```
+
+Student rewrites run on Colab (`notebooks/`, which clone this repo); their output files are scored locally:
+
+```
+python scripts/eval_rewrites.py results/rewrites_<name>.jsonl   # dev retrieval, no LLM call, CPU is enough
+```
+
+`scripts/eval_rewrites.py` on kvkk-rag's cached teacher rewrites gives the sanity-check dev numbers exactly
+(`results/eval_teacher_dev_v1_summary.csv`).
 
 ## Sanity check
 

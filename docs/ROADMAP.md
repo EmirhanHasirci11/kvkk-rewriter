@@ -47,3 +47,21 @@ cached Gemini rewrites and eval code all come from it.
 3. Full data generation, 1000 pairs (decided 2026-10-10): **~$3.8** expected, $6.0 worst case.
    Project LLM budget: $6, enforced in `scripts/llm.py`. Done 2026-10-11: 1,018 pairs, $3.995 project total.
 4. Colab: zero-shot baseline first, then QLoRA.
+
+## Gate 4a: zero-shot baseline (rules written 2026-10-13, before any run)
+- Models (user's choice): `Qwen/Qwen3-4B-Instruct-2507`, `vngrs-ai/Kumru-2B`, `meta-llama/Llama-3.1-8B-Instruct`
+  (8B, above the 1-4B range, added by the user as a larger reference; gated, the user has access on their
+  Hugging Face account; read in Colab from the `HF_TOKEN` secret).
+- Hardware: Colab L4 (24 GB, bf16), paid compute units; each run is approved first and logged in
+  `results/colab_usage.csv`.
+- Prompt: kvkk-rag's rewrite prompt unchanged (`SYSTEM` in `external/kvkk-rag/scripts/rewrite.py`) as the system
+  message, the question as the user message, each model's own chat template. No examples.
+- Decoding: bf16 weights (no quantization), greedy, `max_new_tokens` 256, batch 1. The output is
+  whitespace-normalized as in kvkk-rag's `rewrite()` and nothing else: no stripping of preambles or quotes.
+  Outputs that hit the token limit are flagged (`truncated`), not dropped.
+- Set: dev only (50 q). The held-out set is not touched in gate 4.
+- Latency: wall clock of `generate()` per question on the L4, after one warm-up call on a training question.
+- Retrieval: `scripts/eval_rewrites.py`, the same code and settings as the dev part of the sanity check
+  (fused depth 10), on local CPU.
+- This is a baseline only; nothing is adopted from it. Which models go on to QLoRA is decided with the user
+  after it.

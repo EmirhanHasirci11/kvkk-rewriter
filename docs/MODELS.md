@@ -2,7 +2,10 @@
 
 Candidates for the student, 1-4B parameter instruct models on Hugging Face as of 2026-10-10. Facts come from
 the model cards, `config.json` and the Hub API (parameter counts from the safetensors metadata); no weights
-were downloaded. **No choice made yet.**
+were downloaded.
+
+**Chosen 2026-10-13 (user):** Qwen3-4B-Instruct-2507, Kumru-2B, and Llama-3.1-8B-Instruct (8B, outside the
+shortlist range, the user has gated access) for the zero-shot baseline, on a Colab L4. Rules: `docs/ROADMAP.md`, gate 4a.
 
 | | Qwen3.5-2B | Qwen3-4B-Instruct-2507 | Gemma 4 E2B-it | Kumru-2B |
 |---|---|---|---|---|
@@ -47,5 +50,7 @@ T4 has no bf16, so training there runs in fp16; L4 has bf16.
 - `meta-llama/Llama-3.2-3B-Instruct`: Turkish is not one of its 8 listed languages; gated.
 - `AlicanKiraz0/Kara-Kumru-v1.0-2B`: a community fine-tune of Kumru-2B; its benchmark is self-reported.
   A possible second Turkish candidate if Kumru-2B's zero-shot output is unusable.
+- `meta-llama/Llama-3.1-8B-Instruct`: added by the user on 2026-10-13 as a larger reference (they have gated
+  access); 8.03B, Llama 3.1 license (not Apache), Turkish not among its 8 listed languages; bf16 ~16 GB, fits an L4.
 - Other Turkish models found on the Hub are 7B+ (Turkish-Llama-8b, Turkish-Gemma-9b, Trendyol, Turkcell)
   or small GPT-2 models without instruction tuning.
