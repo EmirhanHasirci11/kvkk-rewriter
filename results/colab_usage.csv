@@ -1,1 +1,2 @@
 date,notebook,gpu,runtime_min,compute_units,purpose,notes
+2026-10-13,notebooks/01_zeroshot.ipynb,NVIDIA L4,,1,zero-shot dev rewrites (3 models),"commit 4d08b4b; ~1 CU as reported by the user (149 left); model load + generation took 10.7 min, setup not timed"

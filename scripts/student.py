@@ -50,9 +50,12 @@ def load(hf_id: str, token=None, device: str = "cuda"):
     tok = AutoTokenizer.from_pretrained(hf_id, token=token)
     model = AutoModelForCausalLM.from_pretrained(hf_id, token=token, dtype=torch.bfloat16, device_map=device)
     model.eval()
+    return model, tok, stop_ids(tok)
+
+
+def stop_ids(tok) -> list[int]:
     vocab = tok.get_vocab()
-    stop = sorted({tok.eos_token_id, *(vocab[t] for t in EXTRA_STOP if t in vocab)} - {None})
-    return model, tok, stop
+    return sorted({tok.eos_token_id, *(vocab[t] for t in EXTRA_STOP if t in vocab)} - {None})
 
 
 def rewrite(model, tok, stop: list[int], question: str) -> dict:

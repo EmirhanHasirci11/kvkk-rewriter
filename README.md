@@ -5,7 +5,7 @@ small model trained with QLoRA, and measuring its effect on retrieval, latency a
 
 Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
 (966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Gate 4a (zero-shot
-baseline, Colab L4) done, see below. Next: QLoRA. Plan and rules:
+baseline, Colab L4) done, see below. Next: gate 4b, QLoRA on all three (`notebooks/02_qlora.ipynb`). Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup

@@ -65,3 +65,16 @@ cached Gemini rewrites and eval code all come from it.
   (fused depth 10), on local CPU.
 - This is a baseline only; nothing is adopted from it. Which models go on to QLoRA is decided with the user
   after it.
+
+## Gate 4b: QLoRA (rules written 2026-10-13, before any run)
+- Models (user's choice, all three from 4a): Qwen3-4B-Instruct-2507, Kumru-2B, Llama-3.1-8B-Instruct. Colab L4.
+- Data: `data/pairs_v1.jsonl`, train split (966) for training, val split (52) for validation loss only.
+  Each example is the inference prompt as is (kvkk-rag's `SYSTEM` + the question, the model's chat template)
+  followed by the teacher rewrite and the template's end-of-turn token; loss on the rewrite tokens only.
+- Base in 4-bit NF4 (double quantization, bf16 compute); LoRA r 16, alpha 32, dropout 0.05, on all linear
+  layers except the LM head. AdamW, lr 2e-4, cosine with 3% warmup, 3 epochs, batch 16 (8 x 2 accumulation),
+  max length 512 tokens (the longest example is 445 Qwen tokens), gradient checkpointing, seed 42. One configuration for all three; nothing is tuned on dev.
+- The adapter after the last epoch is used (no checkpoint picked by dev or val). Val loss per epoch is recorded.
+- Inference: the adapter merged into the bf16 base, then exactly the gate 4a decoding (greedy,
+  `max_new_tokens` 256, batch 1, whitespace normalization only), dev only, latency on the L4.
+- Scored with `scripts/eval_rewrites.py`. Adapters are kept on the user's Google Drive, not in git.
