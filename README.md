@@ -4,8 +4,8 @@ Distilling the Gemini query-rewrite step of [kvkk-rag](https://github.com/Emirha
 small model trained with QLoRA, and measuring its effect on retrieval, latency and cost.
 
 Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
-(966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Gate 4a (zero-shot
-baseline, Colab L4) done, see below. Next: gate 4b, QLoRA on all three (`notebooks/02_qlora.ipynb`). Plan and rules:
+(966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Gates 4a (zero-shot
+baseline) and 4b (QLoRA, all three models) done on a Colab L4, see below. Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup
@@ -62,6 +62,29 @@ Zero-shot, all three break the prompt's rules: they mostly answer the question i
 with numbers that are not in the question ("30 gün", "3 ay"), and their outputs are longer than the teacher's
 (median 249 / 148 / 215 characters vs 143). Kumru-2B also echoes the question or the prompt's rules. Only
 Qwen3-4B's fuse (0.67) is above no rewrite (0.64), within noise.
+
+## QLoRA students (gate 4b, dev, 50 q)
+
+One configuration for all three (`scripts/qlora.py`): 4-bit NF4 base, LoRA r 16 on all linear layers, 3 epochs on
+the 966 training pairs; the last-epoch adapter merged into the bf16 base, then the gate 4a decoding
+(`notebooks/02_qlora.ipynb`, `results/eval_qlora_v1_*_dev_v1_summary.csv`, `results/train_record_qlora_v1_*.json`).
+
+| System | rw R@5 | rw R@10 | fuse R@1 | fuse R@3 | fuse R@5 | fuse R@10 | latency p50 / p95 | train |
+|---|---|---|---|---|---|---|---|---|
+| no rewrite (orig) | 0.64 | 0.73 | | | | | | |
+| Gemini teacher | 0.75 | 0.78 | 0.47 | 0.67 | 0.71 | 0.81 | | |
+| Kumru-2B | 0.49 | 0.74 | 0.34 | 0.55 | 0.69 | 0.81 | 0.5 / 1.0 s | 8 min, 4.7 GB |
+| Qwen3-4B-Instruct-2507 | 0.61 | 0.70 | 0.33 | 0.59 | 0.69 | 0.77 | 2.5 / 3.8 s | 31 min, 12.6 GB |
+| Llama-3.1-8B-Instruct | 0.61 | 0.78 | 0.43 | 0.67 | 0.69 | 0.81 | 2.3 / 3.2 s | 36 min, 16.0 GB |
+
+After training all three rewrite instead of answering:
+median length 142 / 143 / 145 characters (teacher 143), no truncations, and new numbers only as "6698 sayılı Kanun".
+Fuse R@5 is 0.69 for all three, from 0.55 / 0.67 / 0.59 zero-shot, 0.02 (one question) under the teacher.
+Rewrite alone is still well under the teacher (R@5 0.49-0.61 vs 0.75) and, for Kumru-2B, under no rewrite: some
+rewrites drift from the question (Kumru-2B turned "Anonim verilerle araştırma" into "Arama motorları üzerinden").
+Llama-3.1-8B is closest to the teacher at the top ranks (fuse R@1 0.43, R@3 0.67); Kumru-2B matches it at
+R@5 / R@10 at a fifth of the latency. Val loss is lowest after epoch 2 for all three and rises slightly after
+epoch 3 (the rules use the last epoch). Differences between the students are within noise at 50 questions.
 
 ## Sanity check
 
