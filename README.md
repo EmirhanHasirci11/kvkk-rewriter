@@ -40,7 +40,7 @@ Student rewrites run on Colab (`notebooks/`, which clone this repo); their outpu
 ```
 python scripts/eval_rewrites.py results/rewrites_<name>.jsonl   # dev retrieval, no LLM call, CPU is enough
 python scripts/eval_rewrites.py results/rewrites_<name>.jsonl --set heldout   # held-out (gate 5 only)
-python scripts/cost.py                      # cost and latency per question, from the logged runs
+python scripts/cost.py                      # cost and latency, from the logged runs
 ```
 
 `scripts/eval_rewrites.py` on kvkk-rag's cached teacher rewrites gives the sanity-check numbers exactly
@@ -113,26 +113,31 @@ length 151 / 162 / 155 characters (teacher 154). One kind of miss is a misread q
 geçerli mi" became a question about the personal data inside the letter (Kumru-2B, Qwen3-4B) instead of whether the
 Authority accepts anonymous complaints.
 
-## Cost and latency per question
+## Cost and latency
 
-`scripts/cost.py` (`results/cost_v1_summary.csv`), dev + held-out (70 q). Teacher: the cost kvkk-rag logged for each
-cached rewrite (gemini-3.8-flash, default thinking) and the latency of this project's 1,023 teacher calls (API, home
-connection). Students: GPU time per question on the Colab L4 at 1.4 CU/h, priced at Colab's pay-as-you-go list price
-($9.99 per 100 CU, about $0.10 per CU; an assumption, not an invoice). One-off: the training data ($3.995, shared)
-plus each student's training time at the same rate.
+`scripts/cost.py` (`results/cost_v2_summary.csv`), dev + held-out latencies (70 q). The two sides are billed
+differently. The teacher is paid per call: the cost kvkk-rag logged for each cached rewrite (gemini-3.8-flash,
+default thinking), about $0.0032 a question; its latency is from this project's 1,023 teacher calls (API, home
+connection). A student is paid per started GPU hour, however few questions run in it: Colab L4 at 1.4 CU/h, priced
+at Colab's pay-as-you-go list price ($9.99 per 100 CU, about $0.10 per CU; an assumption, not an invoice), so
+$0.14 per started hour. Capacity is 3600 s over the mean L4 latency (batch 1, one question after another); model
+loading, under 2.5 min per model, is left out.
 
-| System | latency p50 / p95 | $ per 1,000 questions | one-off | break-even |
-|---|---|---|---|---|
-| Gemini teacher | 6.7 / 9.4 s | 3.19 | | |
-| Kumru-2B | 0.5 / 1.1 s | 0.02 | $4.01 | ~1,270 questions |
-| Qwen3-4B-Instruct-2507 | 2.7 / 3.9 s | 0.10 | $4.07 | ~1,320 questions |
-| Llama-3.1-8B-Instruct | 2.4 / 3.6 s | 0.09 | $4.08 | ~1,320 questions |
+| System | latency p50 / p95 | capacity per hour | 20 q | 100 q | 1,000 q | 10,000 q | always on |
+|---|---|---|---|---|---|---|---|
+| Gemini teacher | 6.7 / 9.4 s | | $0.06 | $0.32 | $3.19 | $31.89 | |
+| Kumru-2B | 0.5 / 1.1 s | ~6,500 | $0.14 | $0.14 | $0.14 | $0.28 | $3.36 / day |
+| Qwen3-4B-Instruct-2507 | 2.7 / 3.9 s | ~1,350 | $0.14 | $0.14 | $0.14 | $1.12 | $3.36 / day |
+| Llama-3.1-8B-Instruct | 2.4 / 3.6 s | ~1,500 | $0.14 | $0.14 | $0.14 | $0.98 | $3.36 / day |
 
-The student figures are marginal costs with the GPU kept busy. Model loading, setup and idle time are not in them:
-the held-out session used about 1 CU (~$0.10) for 60 rewrites, $0.0017 per question, half the teacher's price, because
-loading three models dominated a short run. At steady load Kumru-2B is about 150x cheaper and 13x faster than the
-teacher, and Llama-3.1-8B about 35x cheaper and 3x faster. Project spend: $3.995 of Gemini calls and 6 Colab CU
-(gates 4a 1, 4b 4, 5 1).
+A started L4 hour costs as much as 44 teacher calls, so a student is cheaper only when each GPU hour holds more than
+44 questions. For batch jobs that is easy: 1,000 questions fit in one hour for every student ($0.14 vs $3.19). For
+small runs it is not: the 20-question held-out set costs $0.14 on the GPU against $0.06 from Gemini. For live
+traffic the GPU has to stay on, $3.36 a day, which pays off above about 1,050 questions a day; under that the
+teacher is cheaper. On speed the students win at any volume: Kumru-2B is 13x and Llama-3.1-8B 3x faster than the
+teacher's API call. One-off cost of the students: $3.995 of training data plus 4 CU ($0.40) of training for all
+three. Project spend: $3.995 of Gemini calls and 6 Colab CU (gates 4a 1, 4b 4, 5 1). `results/cost_v1_summary.csv`
+priced GPU time per second and is superseded.
 
 ## Sanity check
 

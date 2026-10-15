@@ -1,0 +1,5 @@
+system,n,latency_p50_s,latency_p95_s,billing,capacity_per_hour,usd_20_questions,usd_100_questions,usd_1000_questions,usd_10000_questions,usd_per_day_always_on
+gemini-teacher,70,6.68,9.39,0.003189 USD per question,,0.06,0.32,3.19,31.89,
+kumru-2b,70,0.51,1.05,0.14 USD per started L4 hour,6529,0.14,0.14,0.14,0.28,3.36
+qwen3-4b,70,2.67,3.9,0.14 USD per started L4 hour,1352,0.14,0.14,0.14,1.12,3.36
+llama3.1-8b,70,2.35,3.56,0.14 USD per started L4 hour,1498,0.14,0.14,0.14,0.98,3.36
