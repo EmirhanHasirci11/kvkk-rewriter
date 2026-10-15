@@ -1,0 +1,21 @@
+id,rewrite,latency_s,truncated,rw R@1,rw R@3,rw R@5,rw R@10,fuse R@1,fuse R@3,fuse R@5,fuse R@10
+q051,"Veri sorumlusunun yeni alınan çalışanın sürücü belgesi niteliğindeki kişisel verisinin, özel nitelikli kişisel veri kapsamında değerlendirilip değerlendirilemeyeceği.",2.731,False,0.0,0.0,1.0,1.0,0.0,1.0,1.0,1.0
+q052,"Dernek tarafından ilgili kişilerin inançlarına ilişkin kişisel verilerinin, üçüncü kişilere aktarılmasının kişisel verilerin korunması mevzuatı kapsamındaki hukuki şartları ve veri işleme şartları nelerdir?",3.538,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q053,"İnternet ortamında ilgili kişinin paylaşmış olduğu kişisel verilerin, söz konusu verilerin işlendikleri amaçla bağlantılı, sınırlı ve ölçülü olma ilkesine aykırı şekilde işlenmesi hukuka uygun mudur?",3.711,False,0.0,0.0,0.0,1.0,1.0,1.0,1.0,1.0
+q054,Bilgi güvenliği kapsamında veri sorumlusunun alması gereken ilk adımlar ve uygulanacak ilk tedbirler nelerdir?,2.063,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q055,Kişisel verilerin hukuka aykırı olarak aktarılması veya ihlal edilmesi durumunda veri sorumlusunun alacağı tedbirler ve önlemleri içeren kişisel veri işleme politikasında yer alması zorunlu mudur?,3.895,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0
+q056,İlgili kişilere ait kişisel verilerin veri sorumlusu iş ortaklarına aktarılmasında her seferinde açık rıza alınması zorunlu mudur?,2.602,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q057,Sağlık ve diğer özel nitelikli kişisel verilerin işlenme şartları bakımından mevzuat hükümleri aynı mıdır?,1.971,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q058,Küçük ve orta veri sorumluları tarafından uygun fiyatlı veri güvenliği ve kişisel veri işleme güvenliğine ilişkin teknik ve idari tedbirler alınması mümkün müdür?,2.816,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q059,İsimsiz ihbar mektubunda yer alan kişisel verilerin işlenmesi ve söz konusu verilerin hukuka uygunluğu nedir?,2.198,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q060,"İlgili kişilerin kişisel verilerinin işlenme şartları ve bu verilerin silinmesi, yok edilmesi veya anonim hale getirilmesi usul ve esasları nelerdir?",2.98,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0
+q061,"Veri Sorumlusunun Veri Sorumluları Siciline (VERBIS) kayıt bulunması halinde, diğer belgelerin veya onayların düzenlenmesi zorunlu mudur?",2.679,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q062,Mevzuata uygun olarak veri sorumlusunun çalışanların izin alınması süreçlerinde iş akdinin feshi veya idari yaptırım kayıtlarından kişisel verilerini işlemesi hukuka uygun mudur?,3.265,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q063,"Laboratuvar ortamında işlenen tükürük örneği gibi biyolojik örnekler vasıtasıyla elde edilen özel nitelikli kişisel verilerin işlenme amaçları ve bu verilerin bilimsel, sağlık ve araştırma faaliyetlerindeki önemi nedir?",4.192,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q064,Müşteri yönetim yazılımı alım sürecinde veri sorumlusunun dikkat etmesi gereken hususlar nelerdir?,1.974,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q065,"İlgili kişilerin sağlık verilerinin işlenmesi için veri sorumlusundan alınması gereken açık rıza, diğer kişisel verilere ilişkin rızanın genel ilkeleri ile aynı mıdır?",3.023,False,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0
+q066,"Kişisel veri işleme faaliyetlerinde, aydınlatma yükümlülüğü kapsamında hazırlanan aydınlatma metninin güncellenmemesi halinde söz konusu metni kullanmak hukuka uygun mudur?",3.128,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q067,"Hassas kişisel verilerin, ilgili kişinin temin edilmesi veya korunması amacıyla üçüncü kişiler tarafından işlenmesi mümkün müdür?",2.202,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q068,"Kişisel verilerin saklama ve işleme şartları bakımından yasal yükümlülük bulunmayan veri sorumlusunun, işleme amacı ortadan kalkan veya erişilemez hale gelen kişisel verileri silme yükümlülüğü var mıdır?",3.949,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q069,Veri sorumlusunun kampanya amacıyla elde ettiği ilgili kişinin açık rızasının sonradan iptali mümkün müdür?,1.916,False,1.0,1.0,1.0,1.0,0.0,0.0,1.0,1.0
+q070,Kişisel veri kayıt sisteminde yer alan uyruk bilgisi kişisel verilerin özel nitelikli kişisel verisi kapsamında mıdır?,2.021,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0

@@ -1,0 +1,21 @@
+id,rewrite,latency_s,truncated,rw R@1,rw R@3,rw R@5,rw R@10,fuse R@1,fuse R@3,fuse R@5,fuse R@10
+q051,Veri sorumlusu tarafından istihdam edilen yeni şoför adayının ehliyet verilerinin polis tarafından önceden elde edilmiş olması özel nitelikli kişisel veri niteliği taşır mı?,0.614,False,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0
+q052,"Dernek üyesi olan ilgili kişilerin kişisel verilerinin işlenmesi ve aktarılması, kişisel verilerin korunması mevzuatı ve veri güvenliği yükümlülükleri kapsamında hukuka uygun mudur?",0.62,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q053,"İlgili kişi tarafından internet ortamında paylaşılan kişisel verilerin, veri sorumlusu tarafından işlenmesi ve üçüncü kişilere aktarılması hukuka uygun mudur?",0.503,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q054,Veri sorumlusunun bilgi güvenliği kapsamında alması gereken teknik ve idari tedbirler ile ilk adım ilkeleri nelerdir?,0.439,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q055,Kişisel verilerin sızdırılması halinde veri sorumlusunun veri güvenliğini sağlamaya yönelik tedbirleri alma yükümlülüğü bulunmakta mıdır?,0.487,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q056,İlgili kişilere ait kişisel verilerin veri sorumlusu tarafından iş ortaklarına aktarılması süreçlerinde her defasında açık rıza alınması zorunlu mudur?,0.511,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q057,Sağlık verisi niteliğindeki özel nitelikli kişisel verilerin işlenme şartları ile genel kişisel verilerin işlenme şartları 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında karşılaştırıldığında hangi kişisel verilerin özel nitelikli kişisel veri sayıldığı ve işleme şartları bakımından farklılık arz ettiği nedir?,1.061,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q058,Veri sorumlusunun kişisel verilerin güvenliğini sağlamak amacıyla uygun maliyet ve koruma tedbirlerini alması mümkün müdür?,0.445,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q059,Ad ve kimlik bilgileri içermeyen ihbar mektuplarının 6698 sayılı Kanun kapsamında kişisel veri niteliği ve hukuki geçerliliği nedir?,0.539,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q060,"Veri sorumlusu tarafından ilgili kişilere ait kişisel verilerin muhafaza edilmesi durumunda, söz konusu kişisel verilerin silinmesi, yok edilmesi veya anonim hale getirilmesi nasıl gerçekleştirilir?",0.704,False,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0
+q061,Veri sorumlularının Veri Sorumluları Sicil Bilgi Sistemine (VERBİS) kayıt ve bildirim yükümlülüğü bulunmakta mıdır? Veri sorumlularının Veri Sorumluları Siciline kayıt ve bildirim yükümlülüğü bulunmakta mıdır?,1.044,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q062,Mevzuatta öngörülmesi halinde veri sorumlusu tarafından çalışandan açık rıza alınmasında adli sicil kaydı verisi işlenebilir mi?,0.553,False,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0
+q063,Veri sorumlusu laboratuvarlarda muhafaza edilen biyolojik örneklerin (tükürük gibi) özel nitelikli kişisel veri niteliği ve önemi nedir?,0.562,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q064,Veri sorumlusu tarafından ilgili kişilere ait kişisel verilerin işlenmesinde uyulması gereken usul ve esaslar nelerdir?,0.418,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q065,Özel nitelikli kişisel veri olan sağlık verilerinin işlenmesinde ilgili kişinin açık rızasının genel nitelikli kişisel veri işleme şartları ile kıyaslanması.,0.584,False,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0
+q066,Kişisel veri işleme envanteri veya aydınlatma metninin güncellenmeksizin güncel hukuki işleme şartlarına uygun şekilde kullanılması mümkün müdür?,0.484,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q067,Özel nitelikli kişisel veri niteliğindeki sağlık verilerinin üçüncü kişilere aktarılması ölçülülük ilkesi ve özel nitelikli kişisel verilerin işlenme şartları kapsamında hukuka uygun mudur?,0.635,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q068,"Veri sorumlusu tarafından kişisel veri saklama ve imha politikası hazırlanmaması durumunda, eski kişisel verilerin silinmesi veya yok edilmesi yükümlülüğü bulunmakta mıdır?",0.607,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q069,Kampanya kapsamında ilgili kişiden alınan açık rızanın geri alınması ve iptal edilmesi mümkün müdür?,0.422,False,1.0,1.0,1.0,1.0,0.0,0.0,1.0,1.0
+q070,Kimlik belgesinde yer alan uyruk verisinin özel nitelikli kişisel veri niteliği ve veri işleme şartları nelerdir?,0.447,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0

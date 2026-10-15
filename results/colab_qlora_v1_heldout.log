@@ -1,0 +1,8 @@
+06:14:14 start: NVIDIA L4, commit 733ee75, {'torch': '2.11.0+cu130', 'transformers': '5.18.0', 'peft': '0.21.1', 'bitsandbytes': '0.50.2'}
+06:14:14 === kumru-2b: held-out rewrites (vngrs-ai/Kumru-2B + qlora_v1_kumru-2b)
+06:15:01 kumru-2b: held-out rewrites written; latency p50 0.553 s, truncated 0, inference peak 4.78 GB
+06:15:01 === qwen3-4b: held-out rewrites (Qwen/Qwen3-4B-Instruct-2507 + qlora_v1_qwen3-4b)
+06:16:45 qwen3-4b: held-out rewrites written; latency p50 2.816 s, truncated 0, inference peak 8.12 GB
+06:16:45 === llama3.1-8b: held-out rewrites (meta-llama/Llama-3.1-8B-Instruct + qlora_v1_llama3.1-8b)
+06:18:57 llama3.1-8b: held-out rewrites written; latency p50 2.48 s, truncated 0, inference peak 16.14 GB
+06:18:57 done in 4.7 min this session

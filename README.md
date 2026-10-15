@@ -5,8 +5,7 @@ small model trained with QLoRA, and measuring its effect on retrieval, latency a
 
 Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
 (966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Gates 4a (zero-shot
-baseline) and 4b (QLoRA, all three models) done on a Colab L4, see below. Next: gate 5, the held-out set, run
-once with all three students (`notebooks/03_heldout.ipynb`). Plan and rules:
+baseline), 4b (QLoRA, all three models) and 5 (held-out, run once) done on a Colab L4, see below. Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup
@@ -87,6 +86,31 @@ rewrites drift from the question (Kumru-2B turned "Anonim verilerle araştırma"
 Llama-3.1-8B is closest to the teacher at the top ranks (fuse R@1 0.43, R@3 0.67); Kumru-2B matches it at
 R@5 / R@10 at a fifth of the latency. Val loss is lowest after epoch 2 for all three and rises slightly after
 epoch 3 (the rules use the last epoch). Differences between the students are within noise at 50 questions.
+
+## Held-out (gate 5, 20 q, run once)
+
+The three gate 4b students, unchanged, on kvkk-rag's held-out set `eval/test_v2.jsonl` (`notebooks/03_heldout.ipynb`,
+Colab L4, `results/eval_qlora_v1_*_heldout_v1_summary.csv`). Retrieval with kvkk-rag's held-out settings (fused
+depth 30); teacher and no-rewrite numbers from its cached rewrites (`results/eval_teacher_heldout_v1_summary.csv`).
+One question is 5 points.
+
+| System | rw R@1 | rw R@3 | rw R@5 | rw R@10 | fuse R@1 | fuse R@3 | fuse R@5 | fuse R@10 | latency p50 / p95 |
+|---|---|---|---|---|---|---|---|---|---|
+| no rewrite (orig) | 0.15 | 0.30 | 0.35 | 0.65 | | | | | |
+| Gemini teacher | 0.50 | 0.65 | 0.70 | 0.75 | 0.20 | 0.55 | 0.60 | 0.70 | |
+| Kumru-2B | 0.25 | 0.55 | 0.60 | 0.60 | 0.20 | 0.55 | 0.60 | 0.60 | 0.5 / 1.0 s |
+| Qwen3-4B-Instruct-2507 | 0.25 | 0.50 | 0.55 | 0.60 | 0.35 | 0.50 | 0.55 | 0.65 | 2.8 / 4.0 s |
+| Llama-3.1-8B-Instruct | 0.40 | 0.60 | 0.65 | 0.70 | 0.20 | 0.55 | 0.70 | 0.75 | 2.4 / 4.1 s |
+
+On held-out the question alone is weak (R@5 0.35), and every student's rewrite lifts it to 0.55-0.65, four to six
+questions. Against the teacher's rewrite alone (R@5 0.70) Llama-3.1-8B is one question under, Kumru-2B two and
+Qwen3-4B three; the teacher stays clearly ahead at R@1 (0.50 vs 0.25-0.40). With fusion Llama-3.1-8B reaches 0.70
+against the teacher's 0.60: two questions (q060, q064), at the noise limit, so it is read as on par with the
+teacher, not better. Kumru-2B matches the teacher's fuse R@5 at the lowest latency. The order matches dev: Llama-3.1-8B
+closest to the teacher, Kumru-2B the cheapest that keeps up at R@5, Qwen3-4B last. No truncations; median rewrite
+length 151 / 162 / 155 characters (teacher 154). One kind of miss is a misread question: "İsimsiz ihbar mektupları
+geçerli mi" became a question about the personal data inside the letter (Kumru-2B, Qwen3-4B) instead of whether the
+Authority accepts anonymous complaints.
 
 ## Sanity check
 
