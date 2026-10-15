@@ -47,6 +47,7 @@ cached Gemini rewrites and eval code all come from it.
 3. Full data generation, 1000 pairs (decided 2026-10-10): **~$3.8** expected, $6.0 worst case.
    Project LLM budget: $6, enforced in `scripts/llm.py`. Done 2026-10-11: 1,018 pairs, $3.995 project total.
 4. Colab: zero-shot baseline first, then QLoRA.
+5. Held-out: inference only on a Colab L4 (the adapters from gate 4b, no training): ~1 CU expected.
 
 ## Gate 4a: zero-shot baseline (rules written 2026-10-13, before any run)
 - Models (user's choice): `Qwen/Qwen3-4B-Instruct-2507`, `vngrs-ai/Kumru-2B`, `meta-llama/Llama-3.1-8B-Instruct`
@@ -78,3 +79,21 @@ cached Gemini rewrites and eval code all come from it.
 - Inference: the adapter merged into the bf16 base, then exactly the gate 4a decoding (greedy,
   `max_new_tokens` 256, batch 1, whitespace normalization only), dev only, latency on the L4.
 - Scored with `scripts/eval_rewrites.py`. Adapters are kept on the user's Google Drive, not in git.
+
+## Gate 5: held-out (rules written 2026-10-15, before any run)
+- Frozen: everything from gate 4b, nothing changed after looking at the dev results. Models: all three students
+  (Kumru-2B, Qwen3-4B-Instruct-2507, Llama-3.1-8B-Instruct; their dev differences are within noise, so none is
+  picked on dev). Adapters: the `qlora_v1` last-epoch adapters on the user's Drive, as trained; the notebook
+  checks that each adapter's `train_record.json` equals `results/train_record_qlora_v1_<model>.json`.
+- Hardware and decoding: exactly gate 4b's inference on a Colab L4 (adapter merged into the bf16 base, greedy,
+  `max_new_tokens` 256, batch 1, whitespace normalization only, one warm-up call on a training question, latency
+  of `generate()` per question). The local RTX 3080 (10 GB) is not used: Llama-3.1-8B in bf16 does not fit, and
+  all three run on the hardware their dev numbers came from.
+- Set: kvkk-rag `eval/test_v2.jsonl` (20 q), run once (`notebooks/03_heldout.ipynb`). If the runtime disconnects,
+  only the models without an output file are run again; a finished model's rewrites are never regenerated.
+- Scoring: `scripts/eval_rewrites.py --set heldout`: kvkk-rag's held-out retrieval settings (as its
+  `run_heldout.py` and `scripts/sanity_check.py`: no reranker, bm25-p5, fused depth 30). Teacher and no-rewrite
+  references: `results/eval_teacher_heldout_v1_summary.csv` (rw R@5 0.70, fuse R@5 0.60) and
+  `results/sanity_v1_summary.csv` (orig R@5 0.35), computed before the run.
+- The numbers are reported as they come out, whichever way they go; nothing is retuned or rerun afterwards.
+  One held-out question is 5 points: differences under 10 points (two questions) are not claimed.

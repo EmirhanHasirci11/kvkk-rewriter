@@ -1,12 +1,14 @@
-"""Dev-set retrieval with a file of rewrites (a student's, or any other). No LLM call; runs on CPU.
+"""Retrieval with a file of rewrites (a student's, or any other). No LLM call; runs on CPU.
 
 Run from the repo root: python scripts/eval_rewrites.py results/rewrites_<name>.jsonl [...] [--tag <name>]
+                        [--set dev|heldout]
 
-Each input is a JSONL file with one row per dev question: {"id", "question", "rewrite", ...} and, for
-student runs, "latency_s" / "truncated" (from the Colab notebook). Retrieval is the dev part of
-scripts/sanity_check.py: kvkk-rag's retriever (no reranker, bm25-p5, e5 + BM25 RRF, 192/48), fused depth 10,
-systems rw (rewrite alone) and fuse (RRF over question + rewrite). The teacher's numbers are in
-results/sanity_v1_summary.csv. Dev only: the held-out set is run once, at the end, by its own script.
+Each input is a JSONL file with one row per question of the set: {"id", "question", "rewrite", ...} and, for
+student runs, "latency_s" / "truncated" (from the Colab notebook). Retrieval is the matching part of
+scripts/sanity_check.py: kvkk-rag's retriever (no reranker, bm25-p5, e5 + BM25 RRF, 192/48), systems rw
+(rewrite alone) and fuse (RRF over question + rewrite), fused depth 10 on dev (as kvkk-rag's eval_rewrite.py)
+and 30 on held-out (as its run_heldout.py). The teacher's numbers are in results/sanity_v1_summary.csv.
+The held-out set is scored once, at the end (docs/ROADMAP.md, gate 5).
 
 Writes results/eval_<tag>_per_question.csv and results/eval_<tag>_summary.csv (never overwrites); the tag
 defaults to the input file name without "rewrites_".
@@ -23,7 +25,7 @@ from golden import facts, load_golden, recall_at_k
 from retriever import HybridRetriever
 
 KS = (1, 3, 5, 10)
-DEPTH = 10
+SETS = {"dev": (kvkk_rag.DEV, 10), "heldout": (kvkk_rag.HELDOUT, 30)}    # set -> (questions, fused depth)
 
 
 def load_rows(path: Path) -> dict[str, dict]:
@@ -35,11 +37,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="+", type=Path)
     parser.add_argument("--tag", help="only with a single input file")
+    parser.add_argument("--set", choices=SETS, default="dev")
     args = parser.parse_args()
     if args.tag and len(args.files) > 1:
         sys.exit("--tag works with one input file only")
 
-    questions = load_golden(kvkk_rag.DEV)
+    qpath, depth = SETS[args.set]
+    questions = load_golden(qpath)
     jobs = []
     for path in args.files:
         tag = args.tag or path.stem.removeprefix("rewrites_")
@@ -63,7 +67,7 @@ def main():
             row = {"id": q["id"], "rewrite": r["rewrite"], "latency_s": r.get("latency_s"),
                    "truncated": r.get("truncated")}
             for system, qs in {"rw": [r["rewrite"]], "fuse": [q["question"], r["rewrite"]]}.items():
-                ranked = [c["text"] for c in retriever.search_multi(qs, k=DEPTH)]
+                ranked = [c["text"] for c in retriever.search_multi(qs, k=depth)]
                 for k in KS:
                     row[f"{system} R@{k}"] = recall_at_k(ranked, facts(q), k)
             per_q.append(row)

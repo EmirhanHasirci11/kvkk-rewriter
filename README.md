@@ -5,7 +5,8 @@ small model trained with QLoRA, and measuring its effect on retrieval, latency a
 
 Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
 (966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Gates 4a (zero-shot
-baseline) and 4b (QLoRA, all three models) done on a Colab L4, see below. Plan and rules:
+baseline) and 4b (QLoRA, all three models) done on a Colab L4, see below. Next: gate 5, the held-out set, run
+once with all three students (`notebooks/03_heldout.ipynb`). Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup
@@ -39,10 +40,11 @@ Student rewrites run on Colab (`notebooks/`, which clone this repo); their outpu
 
 ```
 python scripts/eval_rewrites.py results/rewrites_<name>.jsonl   # dev retrieval, no LLM call, CPU is enough
+python scripts/eval_rewrites.py results/rewrites_<name>.jsonl --set heldout   # held-out (gate 5 only)
 ```
 
-`scripts/eval_rewrites.py` on kvkk-rag's cached teacher rewrites gives the sanity-check dev numbers exactly
-(`results/eval_teacher_dev_v1_summary.csv`).
+`scripts/eval_rewrites.py` on kvkk-rag's cached teacher rewrites gives the sanity-check numbers exactly
+(`results/eval_teacher_dev_v1_summary.csv`, `results/eval_teacher_heldout_v1_summary.csv`).
 
 ## Zero-shot baseline (gate 4a, dev, 50 q)
 

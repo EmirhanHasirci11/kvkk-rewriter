@@ -1,0 +1,21 @@
+id,rewrite,latency_s,truncated,rw R@1,rw R@3,rw R@5,rw R@10,fuse R@1,fuse R@3,fuse R@5,fuse R@10
+q051,"İlgili kişinin sürücü belgesinin kolluk birimlerince geri alınmasına ilişkin kişisel veri, özel nitelikli kişisel veri kapsamında mıdır?",,,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q052,Veri sorumlusu dernek bünyesinde işlenen ilgili kişilerin inançlarına ilişkin özel nitelikli kişisel verilerin üçüncü kişilere aktarılması mümkün müdür?,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q053,İlgili kişinin kendisi tarafından internet ortamında alenileştirilen kişisel verilerin serbestçe veya alenileştirilme amacı dışında işlenmesi hukuka uygun mudur?,,,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q054,Veri sorumlusunun kişisel veri güvenliğine ilişkin yükümlülükleri kapsamında alması gereken öncelikli idari ve teknik tedbirler nelerdir?,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q055,Veri ihlali gerçekleşmesi halinde yürütülecek süreçlerin ve alınacak tedbirlerin kişisel veri güvenliği politikasında yer alması zorunlu mudur?,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q056,İlgili kişinin kişisel verilerinin üçüncü kişilere aktarılmasında her bir aktarım faaliyeti için ayrı açık rıza alınması zorunlu mudur?,,,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0
+q057,Sağlık verileri ile diğer özel nitelikli kişisel verilerin işlenme şartları ve tabi olduğu usul ve esaslar aynı mıdır?,,,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q058,Küçük ölçekli veri sorumlularının kişisel veri güvenliğini sağlamak amacıyla alması gereken teknik ve idari tedbirlerin düşük maliyetle yerine getirilmesi mümkün müdür?,,,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q059,Kişisel Verileri Koruma Kurumuna iletilen kimlik ve adres bilgisi ihtiva etmeyen ihbar başvuruları geçerli midir ve Kurul tarafından incelemeye alınır mı?,,,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q060,"Hukuki ilişkisi sona eren ilgili kişilere ait kişisel verilerin işleme şartlarının ortadan kalkması durumunda silinmesi, yok edilmesi veya anonim hale getirilmesi usul ve esasları nelerdir?",,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0
+q061,Veri Sorumluları Siciline (VERBİS) kayıt yükümlülüğünü yerine getiren veri sorumlusunun düzenlemekle ve hazırlamakla yükümlü olduğu diğer kişisel veri koruma politika ve belgeleri nelerdir?,,,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q062,"Kanunlarda öngörülmesi halinde, çalışanın açık rızası aranmaksızın ceza mahkûmiyeti ve güvenlik tedbirlerine ilişkin kişisel verilerin işlenmesi mümkün müdür?",,,0.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0
+q063,Laboratuvarda muhafaza edilen biyolojik örnek ve materyallerin genetik ve sağlık verisi niteliği ile özel nitelikli kişisel veri olarak hukuki önemi nedir?,,,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q064,İlgili kişilerin kişisel verilerini işleyen yazılımların temininde veri sorumlusunun veri güvenliğine ilişkin teknik ve idari tedbirler kapsamında dikkat etmesi gereken hususlar nelerdir?,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q065,Özel nitelikli kişisel veri niteliğindeki sağlık verilerinin işlenmesinde aranan açık rıza şartı ile genel nitelikli kişisel verilerin işlenmesindeki açık rıza şartı aynı mıdır?,,,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0
+q066,Aydınlatma yükümlülüğü kapsamında hazırlanan aydınlatma metninin güncellenmeksizin kullanılması hukuken mümkün müdür?,,,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q067,Özel nitelikli kişisel veriler üçüncü kişilerin korunması amacıyla işlenebilir mi?,,,0.0,0.0,1.0,1.0,0.0,1.0,1.0,1.0
+q068,"Kişisel veri saklama ve imha politikası hazırlama yükümlülüğü bulunmayan veri sorumlusunun, işleme şartları ortadan kalkan kişisel verileri silme veya imha etme yükümlülüğü var mıdır?",,,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q069,Pazarlama faaliyetleri kapsamında veri sorumlusuna verilen açık rızanın ilgili kişi tarafından sonradan geri alınması mümkün müdür?,,,1.0,1.0,1.0,1.0,0.0,0.0,1.0,1.0
+q070,Kimlik belgesinde yer alan uyruk kişisel verisi özel nitelikli kişisel veri niteliğinde midir?,,,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
