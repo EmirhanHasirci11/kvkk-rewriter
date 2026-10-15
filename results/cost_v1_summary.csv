@@ -1,0 +1,5 @@
+system,n,latency_p50_s,latency_p95_s,usd_per_question,usd_per_1000,one_off_usd,break_even_questions
+gemini-teacher,70,6.68,9.39,0.003189,3.19,,
+kumru-2b,70,0.51,1.05,2.1e-05,0.02,4.01,1267
+qwen3-4b,70,2.67,3.9,0.000104,0.1,4.07,1318
+llama3.1-8b,70,2.35,3.56,9.3e-05,0.09,4.08,1317
