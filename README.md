@@ -5,7 +5,8 @@ small model trained with QLoRA, and measuring its effect on retrieval, latency a
 
 Status: gates 1-3 done. Training data: 1,018 (question, Gemini teacher rewrite) pairs in `data/pairs_v1.jsonl`
 (966 train / 52 val), from kvkk-rag chunks and generation-only KVKK guides; LLM spend $3.995. Gates 4a (zero-shot
-baseline), 4b (QLoRA, all three models) and 5 (held-out, run once) done on a Colab L4, see below. Plan and rules:
+baseline), 4b (QLoRA, all three models) and 5 (held-out, run once) done on a Colab L4; gate 6 (students in kvkk-rag's
+full pipeline, with the reranker) done locally, see below. Plan and rules:
 `docs/ROADMAP.md`; candidates: `docs/MODELS.md`; data generation: `docs/DATA_PLAN.md`.
 
 ## Setup
@@ -40,6 +41,7 @@ Student rewrites run on Colab (`notebooks/`, which clone this repo); their outpu
 ```
 python scripts/eval_rewrites.py results/rewrites_<name>.jsonl   # dev retrieval, no LLM call, CPU is enough
 python scripts/eval_rewrites.py results/rewrites_<name>.jsonl --set heldout   # held-out (gate 5 only)
+python scripts/eval_pipeline.py             # rewrites in kvkk-rag's full pipeline with the reranker (gate 6)
 python scripts/cost.py                      # cost and latency, from the logged runs
 ```
 
@@ -112,6 +114,29 @@ closest to the teacher, Kumru-2B the cheapest that keeps up at R@5, Qwen3-4B las
 length 151 / 162 / 155 characters (teacher 154). One kind of miss is a misread question: "İsimsiz ihbar mektupları
 geçerli mi" became a question about the personal data inside the letter (Kumru-2B, Qwen3-4B) instead of whether the
 Authority accepts anonymous complaints.
+
+## Full kvkk-rag pipeline, with the reranker (gate 6)
+
+kvkk-rag's frozen final retrieval: question + rewrite, hybrid with bm25-snow, top-30, `bge-reranker-v2-m3`
+(`scripts/eval_pipeline.py`, `results/pipeline_v1_summary.csv`). The rewrites are the gate 4b / 5 outputs; the teacher
+rows reproduce kvkk-rag's saved per-question numbers on both sets. R@30 is the candidate pool before reranking.
+
+| System | dev R@1 | dev R@5 | dev R@10 | dev R@30 | held-out R@5 | held-out R@10 | held-out R@30 |
+|---|---|---|---|---|---|---|---|
+| no rewrite (question alone) | 0.50 | 0.81 | 0.83 | 0.87 | 0.55 | 0.65 | 0.80 |
+| Gemini teacher | 0.52 | 0.86 | 0.90 | 0.96 | 0.55 | 0.75 | 1.00 |
+| Kumru-2B | 0.52 | 0.80 | 0.86 | 0.94 | 0.60 | 0.75 | 1.00 |
+| Qwen3-4B-Instruct-2507 | 0.50 | 0.80 | 0.84 | 0.88 | 0.55 | 0.75 | 1.00 |
+| Llama-3.1-8B-Instruct | 0.48 | 0.80 | 0.86 | 0.94 | 0.50 | 0.70 | 0.90 |
+
+Rule fixed before the run: Llama-3.1-8B replaces the teacher if its dev R@5 is at most 0.04 under the teacher's. It is
+0.06 under (0.80 vs 0.86; it loses q013, q014 and q017 and gains none), so **it does not replace the teacher**. With
+the reranker, no student beats the question alone at R@5 (0.80 vs 0.81): their rewrites still widen the pool (dev
+R@30 0.94 for Llama-3.1-8B and Kumru-2B vs 0.87), but the reranker scores the original question, and what it puts in
+the top 5 is the teacher's extra hits, not the students'. The three lost questions turn on one legal term the teacher
+names and Llama-3.1-8B does not: "ispat yükü" (q017, who must prove the notice was given), "Veri Sorumluları Sicili"
+(q013, where a new company registers; Llama-3.1-8B wrote about the inventory and privacy notice instead) and "gerçek
+kişiler tarafından" (q014, the household exemption). On held-out every system is within one question of 0.55.
 
 ## Cost and latency
 

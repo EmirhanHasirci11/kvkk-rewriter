@@ -97,3 +97,21 @@ cached Gemini rewrites and eval code all come from it.
   `results/sanity_v1_summary.csv` (orig R@5 0.35), computed before the run.
 - The numbers are reported as they come out, whichever way they go; nothing is retuned or rerun afterwards.
   One held-out question is 5 points: differences under 10 points (two questions) are not claimed.
+
+## Gate 6: students in kvkk-rag's full retrieval pipeline (rules written 2026-10-15, before any run)
+- Question: does kvkk-rag lose retrieval if its Gemini rewrite is replaced by the QLoRA Llama-3.1-8B (the user's
+  pick after gate 5)? Gates 4-5 scored retrieval without the reranker; kvkk-rag's final pipeline has one.
+- Pipeline: kvkk-rag's frozen final retrieval (`FINAL` in its `scripts/run_heldout.py`): question + rewrite, e5 +
+  BM25 hybrid with bm25-snow, RRF, top-30, then `bge-reranker-v2-m3` scoring the original question against each
+  candidate; recall on the reranked list. Also recorded: R@30 of the candidate pool before reranking.
+- Systems: no rewrite (the question alone through the same pipeline), Gemini teacher (kvkk-rag's cached rewrites),
+  and the three gate 4b students (Llama-3.1-8B, plus Kumru-2B and Qwen3-4B for reference). Rewrites as already
+  generated in gates 4b and 5; nothing is regenerated, so no Colab run.
+- Sets: dev (50 q) and held-out (20 q). The held-out rewrites are gate 5's frozen outputs and kvkk-rag's pipeline
+  is frozen, so this scores fixed outputs with fixed settings; nothing is chosen from the held-out numbers.
+- Check: the teacher rows must reproduce kvkk-rag's saved per-question numbers exactly (dev: `pipe-snow` in
+  `results/stemming_v1_per_question.csv`, R@5 0.86; held-out: `fuse+bge+snow (final)` in
+  `results/heldout_v2_retrieval_per_question.csv`, R@5 0.55). Otherwise the run stops.
+- Decision: Llama-3.1-8B can replace the teacher in kvkk-rag's retrieval if its dev pipeline R@5 is at most 0.04
+  (two questions) under the teacher's. The held-out numbers are reported next to it and do not change the decision.
+- Script: `scripts/eval_pipeline.py`, local (the reranker may run on the local GPU; the check above guards it).
