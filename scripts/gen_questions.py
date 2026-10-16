@@ -73,8 +73,13 @@ def main():
     parser.add_argument("--per-chunk", type=int, default=5, choices=(3, 4, 5))
     parser.add_argument("--tag", default="v1", help="questions file: data/questions_<tag>.jsonl")
     parser.add_argument("--chunks", default="v2", help="frozen chunk split: data/chunks_<chunks>.jsonl")
+    parser.add_argument("--test-v3", action="store_true", help="gate 7: the leakage filter checks eval/test_v3.jsonl too")
+    parser.add_argument("--skip-chunks-of", nargs="*", default=[], metavar="TAG",
+                        help="gate 7: skip chunks that already have questions in data/questions_<TAG>.jsonl")
     args = parser.parse_args()
     llm.api_key()
+    if args.test_v3:
+        datagen.add_test_v3()
 
     out_path = kvkk_rag.ROOT / f"data/questions_{args.tag}.jsonl"
     chunks_path = kvkk_rag.ROOT / f"data/chunks_{args.chunks}.jsonl"
@@ -87,6 +92,11 @@ def main():
         rows = [r for r in map(json.loads, out_path.read_text(encoding="utf-8").splitlines()) if r]
     done_chunks = {r["chunk_id"] for r in rows}
     seen = {r["question"] for r in rows if r["question"]}
+    for tag in args.skip_chunks_of:
+        other = [r for r in map(json.loads, (kvkk_rag.ROOT / f"data/questions_{tag}.jsonl").read_text(
+            encoding="utf-8").splitlines()) if r]
+        done_chunks |= {r["chunk_id"] for r in other}
+        seen |= {r["question"] for r in other if r["question"]}
     todo = [c for c in order if c["chunk_id"] not in done_chunks][:llm.n_calls(args.limit, args.per_chunk)]
     print(f"chunks: {len(chunks)} total, {len(order)} usable, {len(done_chunks)} already done")
     if not todo:

@@ -34,6 +34,9 @@ questions the nearest-neighbour cosine is 0.88 at the median, 0.91 at p90 and 0.
 the same retention rule), and the 3-gram Jaccard is at most 0.11. e5 cosines are compressed, so 0.92 flags
 questions as close as the closest distinct eval pairs; it cannot separate every paraphrase from a new question
 on a nearby topic, which is why the section exclusion above comes first.
+
+Gate 7 adds eval/test_v3.jsonl to both the exclusion and the leakage filter, only in runs that call
+add_test_v3() (the scripts' --test-v3 flag), so the v1 / v2 splits and filters reproduce unchanged.
 """
 import json
 import random
@@ -58,6 +61,15 @@ GEN_TEXT = kvkk_rag.ROOT / "gen_corpus/text"
 NGRAM_N, NGRAM_MAX = 3, 0.30
 COSINE_MAX = 0.92
 EXCLUDE_SETS = (kvkk_rag.DEV, kvkk_rag.HELDOUT)
+EXTRA_EVAL: list = []    # eval sets the leakage filter checks besides kvkk_rag.EVAL_SETS (gate 7: test_v3)
+
+
+def add_test_v3():
+    """Gate 7: treat eval/test_v3.jsonl as an eval set in the chunk exclusion and the leakage filter."""
+    global EXCLUDE_SETS
+    if kvkk_rag.TEST_V3 not in EXCLUDE_SETS:
+        EXCLUDE_SETS += (kvkk_rag.TEST_V3,)
+        EXTRA_EVAL.append(kvkk_rag.TEST_V3)
 
 
 def all_chunks() -> list[dict]:
@@ -188,9 +200,9 @@ def generation_order(corpus_kept: list[dict], gen_kept: list[dict]) -> list[dict
     return woven + first[n:] + rest[n:]
 
 
-def eval_questions() -> list[dict]:
+def eval_questions(paths=None) -> list[dict]:
     out = []
-    for path in kvkk_rag.EVAL_SETS:
+    for path in paths or (*kvkk_rag.EVAL_SETS, *EXTRA_EVAL):
         out += [{"id": q["id"], "question": q["question"], "file": path.name}
                 for q in map(json.loads, path.read_text(encoding="utf-8").splitlines()) if q]
     # test_v1 repeats q031-q050 of golden
@@ -204,10 +216,10 @@ def _jaccard(a: set, b: set) -> float:
 class LeakageFilter:
     """Checks generated questions against every eval question (n-gram and embedding similarity)."""
 
-    def __init__(self):
+    def __init__(self, paths=None):
         from sentence_transformers import SentenceTransformer
         from retriever import MODEL_NAME
-        self.evals = eval_questions()
+        self.evals = eval_questions(paths)
         self.eval_grams = [_word_ngrams(q["question"], NGRAM_N) for q in self.evals]
         self.model = SentenceTransformer(MODEL_NAME)
         self.eval_vecs = self._encode([q["question"] for q in self.evals])

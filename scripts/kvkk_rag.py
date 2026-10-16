@@ -20,6 +20,7 @@ if str(RAG / "scripts") not in sys.path:
 DEV = RAG / "eval/golden.jsonl"           # 50 questions, used while building kvkk-rag
 HELDOUT = RAG / "eval/test_v2.jsonl"      # 20 questions; in this project, one run only
 EVAL_SETS = (DEV, HELDOUT, RAG / "eval/test_v1.jsonl", RAG / "eval/abstention.jsonl", RAG / "eval/abstention_v2.jsonl")
+TEST_V3 = ROOT / "eval/test_v3.jsonl"     # 20 questions, this project's own (gate 7); one run only
 TEACHER_REWRITES = {"dev": RAG / "results/rewrites_v1.jsonl", "heldout": RAG / "results/rewrites_heldout_v2.jsonl"}
 
 

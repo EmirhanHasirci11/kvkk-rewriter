@@ -7,6 +7,8 @@ threshold from the corpus chunks (median topic score of the section-excluded one
   data/chunks_<tag>.jsonl         every chunk: kept ones with their generation "order", excluded ones with "reason"
   results/chunk_split_<tag>.json  counts per source and document, the threshold and how it behaves on the corpus
 Never overwrites. scripts/gen_questions.py reads data/chunks_<tag>.jsonl.
+Gate 7 (--tag v3 --test-v3 --topic-max 0.8846): eval/test_v3.jsonl joins the eval sets and the topic threshold
+is kept at the v2 value instead of being recomputed (the median is still reported).
 """
 import argparse
 import collections
@@ -27,7 +29,11 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
     parser.add_argument("--tag", default="v1")
+    parser.add_argument("--test-v3", action="store_true", help="gate 7: exclude eval/test_v3.jsonl evidence too")
+    parser.add_argument("--topic-max", type=float, help="fixed topic threshold instead of the computed median")
     args = parser.parse_args()
+    if args.test_v3:
+        datagen.add_test_v3()
     out_chunks = kvkk_rag.ROOT / f"data/chunks_{args.tag}.jsonl"
     out_sum = kvkk_rag.RESULTS / f"chunk_split_{args.tag}.json"
     if out_chunks.exists() or out_sum.exists():
@@ -41,7 +47,8 @@ def main():
     c_sec = [c for c in c_exc if c["reason"].startswith("section")]
     c_ev = [c for c in c_exc if c["reason"] == "evidence"]
     s_kept, s_sec, s_ev = (datagen.topic_scores(model, cs) for cs in (c_kept, c_sec, c_ev))
-    topic_max = round(float(np.median(s_sec)), 4)
+    median = round(float(np.median(s_sec)), 4)
+    topic_max = args.topic_max if args.topic_max is not None else median
     auc = float(np.mean([[a > b for b in s_kept] for a in s_sec]))    # P(section chunk scores above a kept one)
 
     g_kept, g_exc = datagen.split_gen_chunks(model, topic_max)
@@ -60,8 +67,11 @@ def main():
     for c in c_exc + g_exc:
         per_doc[c["doc"]][c["reason"].split()[0]] += 1
     summary = {
+        "eval_sets": [p.name for p in datagen.EXCLUDE_SETS],
         "topic_threshold": topic_max,
-        "topic_threshold_rule": "median topic score of corpus chunks excluded by the section rule",
+        "topic_threshold_rule": ("fixed (--topic-max)" if args.topic_max is not None else
+                                 "median topic score of corpus chunks excluded by the section rule"),
+        "section_median": median,
         "corpus_calibration": {
             "auc_section_vs_kept": round(auc, 3),
             "share_at_or_above_threshold": {"kept": rate(s_kept, topic_max), "section": rate(s_sec, topic_max),

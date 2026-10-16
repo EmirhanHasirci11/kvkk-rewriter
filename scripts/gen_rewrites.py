@@ -44,15 +44,23 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, required=True, help="rewrite at most N questions (pilot: 10)")
     parser.add_argument("--tag", default="v1")
+    parser.add_argument("--eval", type=Path, help="gate 7: rewrite an eval file (e.g. eval/test_v3.jsonl) instead, "
+                                                  "into results/rewrites_teacher_<stem>_v1.jsonl")
     args = parser.parse_args()
     llm.api_key()
 
-    qpath = kvkk_rag.ROOT / f"data/questions_{args.tag}.jsonl"
-    out_path = kvkk_rag.ROOT / f"data/rewrites_{args.tag}.jsonl"
-    if not qpath.exists():
-        sys.exit(f"{qpath} not found; run scripts/gen_questions.py first")
-    questions = [q for q in map(json.loads, qpath.read_text(encoding="utf-8").splitlines())
-                 if q and q["question"] and not q["leak"]]
+    if args.eval:
+        qpath = kvkk_rag.ROOT / args.eval
+        out_path = kvkk_rag.RESULTS / f"rewrites_teacher_{qpath.stem}_v1.jsonl"
+        questions = [{**q, "qid": q["id"], "chunk_id": None} for q in
+                     map(json.loads, qpath.read_text(encoding="utf-8").splitlines()) if q]
+    else:
+        qpath = kvkk_rag.ROOT / f"data/questions_{args.tag}.jsonl"
+        out_path = kvkk_rag.ROOT / f"data/rewrites_{args.tag}.jsonl"
+        if not qpath.exists():
+            sys.exit(f"{qpath} not found; run scripts/gen_questions.py first")
+        questions = [q for q in map(json.loads, qpath.read_text(encoding="utf-8").splitlines())
+                     if q and q["question"] and not q["leak"]]
     done = set()
     if out_path.exists():
         done = {r["qid"] for r in map(json.loads, out_path.read_text(encoding="utf-8").splitlines()) if r}
@@ -67,7 +75,8 @@ def main():
     with out_path.open("a", encoding="utf-8") as f:
         for i, q in enumerate(todo, 1):
             out = teacher_rewrite(q["question"])
-            row = {"qid": q["qid"], "chunk_id": q["chunk_id"], "question": q["question"], "rewrite": out["text"],
+            row = {"qid": q["qid"], **({"id": q["qid"]} if args.eval else {}), "chunk_id": q["chunk_id"],
+                   "question": q["question"], "rewrite": out["text"],
                    "model": llm.MODEL, "input_tokens": out["input_tokens"], "output_tokens": out["output_tokens"],
                    "cost_usd": out["cost_usd"], "latency_s": round(out["latency_s"], 2)}
             f.write(json.dumps(row, ensure_ascii=False) + "\n")

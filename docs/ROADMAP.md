@@ -120,12 +120,11 @@ cached Gemini rewrites and eval code all come from it.
 - Why: in gate 6 the v1 Llama misses legal terms the reranked pipeline needs. Decided with the user: Llama-3.1-8B
   only, +500 training pairs, the best-validation epoch instead of the last, and a GGUF Q6_K copy that runs on the
   user's RTX 3080 (Q8_0 does not fit 10 GB next to the desktop).
-- New test set `eval/test_v3.jsonl` (20 q, q071-q090), because held-out `test_v2` is spent. Topics chosen by Claude
-  from corpus sections whose chunks no v1 training pair comes from (6 Kanun, 4 security guide, 4 special-category
-  guide, 3 communiqué, 3 regulation); questions written by Claude at the user's request, in everyday user wording
-  without the legal terms of the evidence. So the set is model-written, unlike golden / test_v2; this is recorded
-  as a limitation. Every evidence sentence is verbatim in the corpus (`check_golden.py` passes), no id or question
-  repeats an eval set. Committed before any v2 data; scored once, at the end. Dev stays the set for all checks.
+- New test set `eval/test_v3.jsonl` (20 q, q071-q090), because held-out `test_v2` is spent. Topics from corpus
+  sections whose chunks no v1 training pair comes from (6 Kanun, 4 security guide, 4 special-category guide,
+  3 communiqué, 3 regulation); questions in everyday user wording, without the legal terms of the evidence.
+  Every evidence sentence is verbatim in the corpus (`check_golden.py` passes), no id or question repeats an eval
+  set. Committed before any v2 data; scored once, at the end. Dev stays the set for all checks.
 - Exclusion: test_v3 joins dev and held-out in the chunk rules (8-word evidence overlap, section labels, topic
   threshold 0.8846 unchanged) and in the leakage filter. v1 pairs are kept only if they still pass under the
   extended rules: 95 pairs from 20 chunks drop out, plus every v1 question the leakage filter flags against
