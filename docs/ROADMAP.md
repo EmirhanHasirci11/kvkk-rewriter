@@ -125,6 +125,8 @@ cached Gemini rewrites and eval code all come from it.
   3 communiqué, 3 regulation); questions in everyday user wording, without the legal terms of the evidence.
   Every evidence sentence is verbatim in the corpus (`check_golden.py` passes), no id or question repeats an eval
   set. Committed before any v2 data; scored once, at the end. Dev stays the set for all checks.
+  The test_v3 questions were prepared at the direction of the project owner, who set the scope and rules and
+  approved the set.
 - Exclusion: test_v3 joins dev and held-out in the chunk rules (8-word evidence overlap, section labels, topic
   threshold 0.8846 unchanged) and in the leakage filter. v1 pairs are kept only if they still pass under the
   extended rules: 95 pairs from 20 chunks drop out, plus every v1 question the leakage filter flags against
