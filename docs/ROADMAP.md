@@ -148,3 +148,7 @@ cached Gemini rewrites and eval code all come from it.
   for no rewrite, the teacher, v1 (bf16, the gate 4b adapter, rewrites made on Colab in the v2 session) and v2
   (the accepted local model). Reported as they come out; one test_v3 question is 5 points, differences under
   10 points are not claimed.
+- Data done 2026-10-16: teacher test_v3 rewrites $0.071; 100 new chunks -> 437 questions, 7 dropped by the leakage
+  filter, 430 teacher rewrites; project LLM total $5.76 of $6 (the budget ended the run at 430 instead of 500).
+  `data/pairs_v2.jsonl`: 1,347 pairs (1,284 train / 63 val) from v1 + v2; dropped 100 v1 questions whose chunk is
+  excluded under split v3, 6 flagged against test_v3 (all close to q075), 10 leaks from generation.

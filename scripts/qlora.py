@@ -1,6 +1,7 @@
 """QLoRA training of a student on the teacher rewrites, and loading the merged model. Used by the Colab notebooks.
 
-Rules (data, hyperparameters, which adapter is used): docs/ROADMAP.md, gate 4b. Each training example is the
+Rules (data, hyperparameters, which adapter is used): docs/ROADMAP.md, gate 4b (v1) and gate 7 (v2: pairs_v2,
+an adapter saved after every epoch, the lowest validation loss is used). Each training example is the
 inference prompt exactly as student.rewrite() builds it, followed by the teacher rewrite and the chat template's
 end-of-turn token; the loss is on that continuation only. torch / transformers / peft / bitsandbytes are
 imported inside the functions, so encode() can be tested with a tokenizer alone.
@@ -19,8 +20,8 @@ CONFIG = {"lora_r": 16, "lora_alpha": 32, "lora_dropout": 0.05, "lr": 2e-4, "war
           "batch_size": 8, "grad_accum": 2, "max_len": 512, "seed": 42}
 
 
-def load_pairs(split: str) -> list[dict]:
-    return [r for r in map(json.loads, PAIRS.read_text(encoding="utf-8").splitlines()) if r and r["split"] == split]
+def load_pairs(split: str, pairs: Path = PAIRS) -> list[dict]:
+    return [r for r in map(json.loads, pairs.read_text(encoding="utf-8").splitlines()) if r and r["split"] == split]
 
 
 def encode(tok, question: str, rewrite: str, max_len: int) -> dict:
@@ -50,8 +51,13 @@ def collate(batch: list[dict], pad_id: int):
     return ids, labels, mask
 
 
-def train(hf_id: str, out_dir: Path, token=None, cfg: dict = CONFIG, max_steps: int | None = None, log=print) -> dict:
-    """Train a LoRA adapter on the 4-bit base, save it to out_dir, return the training record."""
+def train(hf_id: str, out_dir: Path, token=None, cfg: dict = CONFIG, max_steps: int | None = None, log=print,
+          pairs: Path = PAIRS, best_val: bool = False) -> dict:
+    """Train a LoRA adapter on the 4-bit base, save it to out_dir, return the training record.
+
+    v1 (best_val False): the adapter after the last epoch. v2 (best_val True, gate 7): an adapter is saved to
+    out_dir/epoch<n> after every epoch, and the one with the lowest validation loss is also saved to out_dir.
+    """
     import torch
     from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, get_cosine_schedule_with_warmup
@@ -60,8 +66,8 @@ def train(hf_id: str, out_dir: Path, token=None, cfg: dict = CONFIG, max_steps: 
     torch.manual_seed(cfg["seed"])
     tok = AutoTokenizer.from_pretrained(hf_id, token=token)
     pad_id = tok.pad_token_id if tok.pad_token_id is not None else student.stop_ids(tok)[0]
-    train_set = [encode(tok, r["question"], r["rewrite"], cfg["max_len"]) for r in load_pairs("train")]
-    val_set = [encode(tok, r["question"], r["rewrite"], cfg["max_len"]) for r in load_pairs("val")]
+    train_set = [encode(tok, r["question"], r["rewrite"], cfg["max_len"]) for r in load_pairs("train", pairs)]
+    val_set = [encode(tok, r["question"], r["rewrite"], cfg["max_len"]) for r in load_pairs("val", pairs)]
 
     bnb = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
                              bnb_4bit_compute_dtype=torch.bfloat16)
@@ -98,7 +104,7 @@ def train(hf_id: str, out_dir: Path, token=None, cfg: dict = CONFIG, max_steps: 
         return tot / n
 
     torch.cuda.reset_peak_memory_stats()
-    record = {"hf_id": hf_id, "config": cfg, "trainable_params": trainable, "train_n": len(train_set),
+    record = {"hf_id": hf_id, "config": cfg, "pairs": pairs.name, "trainable_params": trainable, "train_n": len(train_set),
               "val_n": len(val_set), "steps": total, "val_loss": [round(val_loss(), 4)], "train_loss": []}
     log(f"trainable {trainable:,}; {len(train_set)} train / {len(val_set)} val; {total} steps; "
         f"val loss before training {record['val_loss'][0]}")
@@ -133,12 +139,21 @@ def train(hf_id: str, out_dir: Path, token=None, cfg: dict = CONFIG, max_steps: 
                 break
         record["val_loss"].append(round(val_loss(), 4))
         log(f"epoch {epoch + 1} val loss {record['val_loss'][-1]}")
+        if best_val:
+            model.save_pretrained(out_dir / f"epoch{epoch + 1}")
         if step >= total:
             break
     record["train_min"] = round((time.time() - t0) / 60, 2)
     record["peak_gpu_gb"] = round(torch.cuda.max_memory_allocated() / 1e9, 2)
     out_dir.mkdir(parents=True, exist_ok=True)
-    model.save_pretrained(out_dir)
+    if best_val:
+        best = min(range(1, len(record["val_loss"])), key=lambda e: record["val_loss"][e])
+        record["best_epoch"] = best
+        log(f"lowest validation loss after epoch {best} ({record['val_loss'][best]}); that adapter is used")
+        for f in (out_dir / f"epoch{best}").iterdir():
+            (out_dir / f.name).write_bytes(f.read_bytes())
+    else:
+        model.save_pretrained(out_dir)
     (out_dir / "train_record.json").write_text(json.dumps(record, indent=2), encoding="utf-8")
     del model, opt
     torch.cuda.empty_cache()
