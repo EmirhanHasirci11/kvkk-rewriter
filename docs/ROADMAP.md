@@ -115,3 +115,37 @@ cached Gemini rewrites and eval code all come from it.
 - Decision: Llama-3.1-8B can replace the teacher in kvkk-rag's retrieval if its dev pipeline R@5 is at most 0.04
   (two questions) under the teacher's. The held-out numbers are reported next to it and do not change the decision.
 - Script: `scripts/eval_pipeline.py`, local (the reranker may run on the local GPU; the check above guards it).
+
+## Gate 7: Llama-3.1-8B v2 (rules written 2026-10-16, before any v2 data or run)
+- Why: in gate 6 the v1 Llama misses legal terms the reranked pipeline needs. Decided with the user: Llama-3.1-8B
+  only, +500 training pairs, the best-validation epoch instead of the last, and a GGUF Q6_K copy that runs on the
+  user's RTX 3080 (Q8_0 does not fit 10 GB next to the desktop).
+- New test set `eval/test_v3.jsonl` (20 q, q071-q090), because held-out `test_v2` is spent. Topics chosen by Claude
+  from corpus sections whose chunks no v1 training pair comes from (6 Kanun, 4 security guide, 4 special-category
+  guide, 3 communiqué, 3 regulation); questions written by Claude at the user's request, in everyday user wording
+  without the legal terms of the evidence. So the set is model-written, unlike golden / test_v2; this is recorded
+  as a limitation. Every evidence sentence is verbatim in the corpus (`check_golden.py` passes), no id or question
+  repeats an eval set. Committed before any v2 data; scored once, at the end. Dev stays the set for all checks.
+- Exclusion: test_v3 joins dev and held-out in the chunk rules (8-word evidence overlap, section labels, topic
+  threshold 0.8846 unchanged) and in the leakage filter. v1 pairs are kept only if they still pass under the
+  extended rules: 95 pairs from 20 chunks drop out, plus every v1 question the leakage filter flags against
+  test_v3 (one known before the run: g35-006_3, cosine 0.935 to q075).
+- New data: about 500 pairs from usable chunks that no v1 pair comes from, with the v1 pipeline unchanged (same
+  generation order rule and seed, prompt v2, 5 questions per chunk, `gemini-3.8-flash`, teacher = kvkk-rag's
+  rewrite step), into new versioned files. The validation split rule is unchanged (5% of the new chunks); v1
+  val pairs stay val. LLM budget stays $6: if the guard stops the run early, v2 trains on what exists.
+- Teacher reference on test_v3: kvkk-rag's rewrite of the 20 questions (about $0.07), made before the data
+  generation so the budget guard cannot block it. Not scored until the end.
+- Training (Colab L4): gate 4b's QLoRA configuration unchanged except that an adapter is saved after each of the
+  3 epochs and the one with the lowest validation loss is used (val split, never dev). Merged into the bf16 base.
+- Quantization (Colab): merged bf16 -> GGUF f16 (llama.cpp `convert_hf_to_gguf.py`) -> Q6_K (`llama-quantize`),
+  saved to Drive. Check on dev, run on the local RTX 3080 with llama.cpp (the HF chat template as the prompt
+  text, greedy, `max_new_tokens` 256, whitespace normalization only): Q6_K is accepted if its dev rw R@5 (gate 4b
+  scoring) and dev full-pipeline R@5 (gate 6 scoring) are each within 0.02 (one question) of bf16 v2; the share of
+  rewrites identical to bf16 is reported. If not accepted, Q8_0 with part of the layers on the CPU, as agreed.
+- Decision, on dev with the accepted model: v2 can replace the teacher in kvkk-rag's retrieval if its dev
+  full-pipeline R@5 is at most 0.04 (two questions) under the teacher's (0.86), the same rule as gate 6.
+- Final, once, everything frozen: test_v3 through gate 4b scoring (rw, fuse) and gate 6 scoring (full pipeline)
+  for no rewrite, the teacher, v1 (bf16, the gate 4b adapter, rewrites made on Colab in the v2 session) and v2
+  (the accepted local model). Reported as they come out; one test_v3 question is 5 points, differences under
+  10 points are not claimed.
