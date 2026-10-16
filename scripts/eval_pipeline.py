@@ -1,6 +1,7 @@
 """Rewrites in kvkk-rag's full retrieval pipeline, with the reranker (docs/ROADMAP.md, gate 6). No LLM call.
 
-Run from the repo root: python scripts/eval_pipeline.py [--tag pipeline_v1]
+Run from the repo root: python scripts/eval_pipeline.py [--tag pipeline_v1] [--sets dev heldout]
+                        [--system NAME=results/rewrites_..._{set}_v1.jsonl ...]
 
 Pipeline: kvkk-rag's frozen final retrieval (FINAL in its scripts/run_heldout.py): question + rewrite through the
 e5 + BM25 hybrid with bm25-snow, RRF, top-30, then bge-reranker-v2-m3 scoring the original question; recall on
@@ -8,6 +9,8 @@ the reranked list, plus R@30 of the candidate pool before reranking. Systems: no
 Gemini teacher (kvkk-rag's cached rewrites) and the three gate 4b students (results/rewrites_qlora_v1_*).
 Sets: dev (50 q) and held-out (20 q). The teacher rows must equal kvkk-rag's saved per-question numbers, or the
 run stops. Writes results/<tag>_per_question.csv and results/<tag>_summary.csv (never overwrites).
+Gate 7: --system replaces the default students ("{set}" in the path is filled in per set); test_v3 has no saved
+kvkk-rag numbers, its teacher rewrites are this project's (results/rewrites_teacher_test_v3_v1.jsonl).
 """
 import argparse
 import json
@@ -23,12 +26,14 @@ from retriever import HybridRetriever
 
 KS = (1, 3, 5, 10)
 N_CAND = 30
-STUDENTS = ("kumru-2b", "qwen3-4b", "llama3.1-8b")
+STUDENTS = {s: f"results/rewrites_qlora_v1_{s}_{{set}}_v1.jsonl" for s in ("kumru-2b", "qwen3-4b", "llama3.1-8b")}
 # set -> (questions, saved kvkk-rag per-question file, its column prefix for the teacher's final pipeline)
 SETS = {
     "dev": (kvkk_rag.DEV, "results/stemming_v1_per_question.csv", "pipe-snow"),
     "heldout": (kvkk_rag.HELDOUT, "results/heldout_v2_retrieval_per_question.csv", "fuse+bge+snow (final)"),
+    "test_v3": (kvkk_rag.TEST_V3, None, None),
 }
+TEACHER = {**kvkk_rag.TEACHER_REWRITES, "test_v3": kvkk_rag.TEACHER_TEST_V3}
 
 
 def load_rewrites(path: Path) -> dict[str, str]:
@@ -39,7 +44,11 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
     parser.add_argument("--tag", default="pipeline_v1")
-    tag = parser.parse_args().tag
+    parser.add_argument("--sets", nargs="+", choices=SETS, default=["dev", "heldout"])
+    parser.add_argument("--system", action="append", metavar="NAME=PATH", help="replaces the default students")
+    args = parser.parse_args()
+    tag, sets = args.tag, {s: SETS[s] for s in args.sets}
+    students = dict(s.split("=", 1) for s in args.system) if args.system else STUDENTS
     out_pq, out_sum = (kvkk_rag.RESULTS / f"{tag}_{x}.csv" for x in ("per_question", "summary"))
     if out_pq.exists() or out_sum.exists():
         sys.exit(f"{out_pq.name} or {out_sum.name} already exists; use a new --tag")
@@ -47,9 +56,9 @@ def main():
     retriever = HybridRetriever(kvkk_rag.corpus_texts(), stem="snow")
     reranker = Reranker()
     rows = []
-    for set_name, (qpath, saved_path, saved_col) in SETS.items():
-        rewrites = {"teacher": load_rewrites(kvkk_rag.TEACHER_REWRITES[set_name]),
-                    **{s: load_rewrites(kvkk_rag.RESULTS / f"rewrites_qlora_v1_{s}_{set_name}_v1.jsonl") for s in STUDENTS}}
+    for set_name, (qpath, saved_path, saved_col) in sets.items():
+        rewrites = {"teacher": load_rewrites(TEACHER[set_name]),
+                    **{s: load_rewrites(kvkk_rag.ROOT / p.format(set=set_name)) for s, p in students.items()}}
         for q in load_golden(qpath):
             row = {"set": set_name, "id": q["id"]}
             for system in ("orig", *rewrites):
@@ -61,6 +70,8 @@ def main():
                     row[f"{system} R@{k}"] = recall_at_k(ranked, facts(q), k)
             rows.append(row)
         print(f"{set_name} done", flush=True)
+        if saved_path is None:
+            continue
 
         # the teacher's rows must reproduce kvkk-rag's final pipeline exactly
         mine = pd.DataFrame([r for r in rows if r["set"] == set_name]).set_index("id")
@@ -71,16 +82,16 @@ def main():
         print(f"{set_name}: teacher reproduces {saved_col} in kvkk-rag {saved_path}", flush=True)
 
     per_q = pd.DataFrame(rows)
-    systems = ["orig", "teacher", *STUDENTS]
+    systems = ["orig", "teacher", *students]
     summary = pd.DataFrame([{"set": s, "n": int((per_q["set"] == s).sum()), "system": system,
                              **{f"R@{k}": per_q.loc[per_q["set"] == s, f"{system} R@{k}"].mean() for k in KS + (N_CAND,)}}
-                            for s in SETS for system in systems]).round(2)
+                            for s in sets for system in systems]).round(2)
     per_q.to_csv(out_pq, index=False)
     summary.to_csv(out_sum, index=False)
     print(summary.to_string(index=False))
-    for s in SETS:
+    for s in sets:
         d = per_q[per_q["set"] == s]
-        for system in ("orig", *STUDENTS):
+        for system in ("orig", *students):
             a, b = d[f"{system} R@5"], d["teacher R@5"]
             print(f"{s} {system} vs teacher at R@5: gained {d.loc[a > b, 'id'].tolist()}, lost {d.loc[a < b, 'id'].tolist()}")
     print(f"wrote {out_pq.name}, {out_sum.name}")

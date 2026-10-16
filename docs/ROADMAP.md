@@ -152,3 +152,15 @@ cached Gemini rewrites and eval code all come from it.
   filter, 430 teacher rewrites; project LLM total $5.76 of $6 (the budget ended the run at 430 instead of 500).
   `data/pairs_v2.jsonl`: 1,347 pairs (1,284 train / 63 val) from v1 + v2; dropped 100 v1 questions whose chunk is
   excluded under split v3, 6 flagged against test_v3 (all close to q075), 10 leaks from generation.
+- Colab done 2026-10-16 (`notebooks/04_qlora_v2.ipynb`, commit 96f3afc, log `results/colab_qlora_v2.log`): the
+  runtime disconnected once during epoch 1 and training restarted from the start; val loss 1.657 -> 0.865 / 0.798 /
+  0.870, so the epoch 2 adapter is used (`results/train_record_qlora_v2_llama3.1-8b.json`); Q6_K on Drive, 6.60 GB.
+- v2 bf16 on dev: gate 4b scoring rw R@5 0.69, fuse 0.73 (v1 0.61 / 0.69, teacher 0.75 / 0.71); gate 6 full
+  pipeline R@5 0.84 (v1 0.80, teacher 0.86, no rewrite 0.81), lost only q014 against the teacher
+  (`results/pipeline_v2_dev_*`). `eval_pipeline.py` with its default arguments still reproduces
+  `results/pipeline_v1_*` byte for byte.
+- Before the final run (rules fixed now): test_v3 is scored by `eval_rewrites.py --set test_v3` with the held-out
+  fused depth (30), and by `eval_pipeline.py --sets test_v3` (kvkk-rag has no saved numbers for it, so there is no
+  reproduction check; the teacher rewrites are `results/rewrites_teacher_test_v3_v1.jsonl`).
+- Local run: `scripts/gguf_rewrites.py` with the prebuilt llama.cpp b11696 (CUDA 13.4) in `tools/` (not in git);
+  the prompt goes in as the HF tokenizer's token ids of the chat template, so the input equals the bf16 run's.

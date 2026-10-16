@@ -1,14 +1,15 @@
 """Retrieval with a file of rewrites (a student's, or any other). No LLM call; runs on CPU.
 
 Run from the repo root: python scripts/eval_rewrites.py results/rewrites_<name>.jsonl [...] [--tag <name>]
-                        [--set dev|heldout]
+                        [--set dev|heldout|test_v3]
 
 Each input is a JSONL file with one row per question of the set: {"id", "question", "rewrite", ...} and, for
 student runs, "latency_s" / "truncated" (from the Colab notebook). Retrieval is the matching part of
 scripts/sanity_check.py: kvkk-rag's retriever (no reranker, bm25-p5, e5 + BM25 RRF, 192/48), systems rw
 (rewrite alone) and fuse (RRF over question + rewrite), fused depth 10 on dev (as kvkk-rag's eval_rewrite.py)
 and 30 on held-out (as its run_heldout.py). The teacher's numbers are in results/sanity_v1_summary.csv.
-The held-out set is scored once, at the end (docs/ROADMAP.md, gate 5).
+The held-out set is scored once, at the end (docs/ROADMAP.md, gate 5); test_v3 likewise (gate 7), with the
+held-out depth of 30.
 
 Writes results/eval_<tag>_per_question.csv and results/eval_<tag>_summary.csv (never overwrites); the tag
 defaults to the input file name without "rewrites_".
@@ -25,7 +26,8 @@ from golden import facts, load_golden, recall_at_k
 from retriever import HybridRetriever
 
 KS = (1, 3, 5, 10)
-SETS = {"dev": (kvkk_rag.DEV, 10), "heldout": (kvkk_rag.HELDOUT, 30)}    # set -> (questions, fused depth)
+SETS = {"dev": (kvkk_rag.DEV, 10), "heldout": (kvkk_rag.HELDOUT, 30),    # set -> (questions, fused depth)
+        "test_v3": (kvkk_rag.TEST_V3, 30)}
 
 
 def load_rows(path: Path) -> dict[str, dict]:

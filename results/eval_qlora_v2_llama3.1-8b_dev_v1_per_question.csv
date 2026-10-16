@@ -1,0 +1,51 @@
+id,rewrite,latency_s,truncated,rw R@1,rw R@3,rw R@5,rw R@10,fuse R@1,fuse R@3,fuse R@5,fuse R@10
+q001,"İlgili kişilerin kişisel verilerinin silinmesi, yok edilmesi veya anonim hale getirilmesi hangi hallerde gerçekleştirilir?",1.758,False,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0
+q002,"İlgili kişinin açık rızası, veri sorumlusuna kişisel verilerinin işlenmesine yönelik özgür iradesini ve açıkça beyanını ifade eder.",2.197,False,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0
+q003,İlgili kişinin kişisel verilerine ilişkin bilgi talep etmesi halinde veri sorumlusunun cevap verme süresi nedir?,1.531,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q004,Veri sorumlusunun veri ihlali durumunda ilgili kişiye ve Kişisel Verileri Koruma Kurumu'na bildirim yükümlülüğü ve veri ihlali tanımı.,2.414,False,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0
+q005,"Veri sorumlularının, kişisel verilerin silinmesi veya yok edilmesine ilişkin yükümlülüğün süresine ilişkin usul ve esaslar nelerdir?",2.288,False,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0
+q006,"Veri sorumlusunun, kişisel verilerin hangi amaçla işlendiğini ilgili kişiye aydınlatma yükümlülüğü kapsamında bildirme zorunluluğu bulunmakta mıdır?",2.42,False,0.0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+q007,İlgili kişinin aydınlatma hakkını kullanması ve açık rıza vermesi amacıyla veri sorumlusu tarafından kullanılan metin okunduğunu teyit kutusunun tek bir onay kutusu olarak sunulması mevzuat kapsamında hukuka uygun mudur?,3.613,False,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0
+q008,Veri sorumlusu tarafından kullanılan şifreleme sistemlerinde anahtarın (key) ortam dosyası (.env) gibi bir veri kayıt sisteminde saklanması kişisel verilerin korunması mevzuatına uygun mudur?,3.127,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q009,İlgili kişinin klavyede yazma ritmi ve hızının ölçülmesi vasıtasıyla elde edilen biyometrik verilerin özel nitelikli kişisel veri niteliği taşıyıp taşımadığı.,2.995,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q010,"İlgili kişinin kişisel verisinin silinmesi talebiyle, veri sorumlusu tarafından üçüncü kişilere aktarılan kişisel verilerin silinme süresi ve aktarılan veri işleyenin veri silme yükümlülüğü.",3.126,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q011,İlgili kişilere ait kişisel verilerin yurt dışına aktarımı ve yurt dışındaki veri işleyenler vasıtasıyla saklanması.,1.954,False,0.0,0.0,1.0,1.0,0.0,1.0,1.0,1.0
+q012,Kişisel verilerin ihlali neticesinde ortaya çıkan zararın giderilmesine ilişkin veri sorumlusunun yükümlülükleri ve veri sorumlusunun karşılaması gereken masraflar.,2.646,False,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q013,Veri sorumlusu sıfatını haiz olan yeni kurulan şirketin kişisel veri işleme faaliyeti kapsamında veri işleme şartları ve hukuki yükümlülükleri kapsamında Kişisel Verileri Koruma Kurumu nezdinde başvuruda bulunulması gereken merci ve usul nedir?,3.731,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0
+q014,İlgili kişilerin yakınlarının kişisel verilerinin mobil cihazlarda muhafaza edilmesi ve işlenmesi.,1.41,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q015,"Veri sorumlusunun kişisel verileri silme, yok etme veya anonim hale getirme yükümlülükleri ve usulleri nelerdir?",1.952,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q016,"İlgili kişinin kişisel verilerinin silinmesi durumunda, silme işleminin kaydedilmesi ve veri kayıt sisteminin tutulması zorunlu mudur?",2.206,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q017,Veri sorumlusunun ilgili kişilere yönelik aydınlatma yükümlülüğünü yerine getirdiğine ilişkin ispat yükü kimde bulunmakta mıdır?,2.3,False,0.0,0.0,1.0,1.0,0.0,1.0,1.0,1.0
+q018,"İnternet depolarında kişisel veri kaydedilmesi ve muhafazasında veri sorumlusunun uymakla yükümlü olduğu usul, esas ve teknik tedbirler nelerdir?",2.618,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q019,Veri sorumlusunun çalışanların işlediği kişisel verileri belirli bir veri kayıt sisteminin parçası olarak muhafaza etme yükümlülüğü bulunmakta mıdır?,2.232,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q020,İlgili kişilere ait çalışan kartlarına eklenen görsel veri niteliğindeki fotoğraf kişisel verilerin özel nitelikli kişisel veri niteliği taşıyıp taşımadığı.,2.589,False,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0
+q021,Veri sorumlusunun başvuru talebine cevap vermemesi veya talebi yeterli bulmaması halinde ilgili kişinin Kurula şikayette bulunma süresi nedir?,2.171,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q022,Veri sorumlusunun veri güvenliğine ilişkin yükümlülüklerini ihlal etmesi halinde idari yaptırım uygulanır mı?,1.851,False,0.0,0.0,0.0,1.0,0.0,1.0,1.0,1.0
+q023,Sözleşme kurulması veya ifası kapsamında işlenen kişisel verilerin işlenmesinin hukuka uygunluğu ve açık rıza alınması.,1.913,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q024,"İlgili kişinin, veri sorumlusundan ayrıldıktan sonra işlenen kişisel verilerini üçüncü kişilere aktarması hukuka uygun mudur?",2.23,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q025,Kişisel verilerin anonim hale getirilmesi ve gizlenmesi kavramlarının tanımı nedir?,1.316,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q026,"İlgili kişinin veri sorumlusuna karşı olan ilişkisinin sona ermesi halinde, ilgili kişiye ait kişisel verilerin silinmesi, yok edilmesi veya anonim hale getirilmesi usul ve esasları nelerdir?",2.927,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q027,"Kişisel verilerin yedekleme sistemlerinde yer alan kişisel verilere yalnızca veri sorumlusu, veri işleyen ve yetkili kamu kurum ve kuruluşları tarafından erişilebilmesi.",2.647,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q028,"Bulut bilişim hizmeti kapsamında kişisel verilerin saklandığı sunucularda üyeliğin sona ermesi halinde, veri sorumlusunun veri güvenliğine ilişkin yükümlülükleri kapsamında şifreleme anahtarlarının saklanması ve imha usul ve esasları nelerdir?",3.949,False,0.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0
+q029,"İlgili kişinin kişisel verilerinin, veri sorumlusu tarafından açık rızası doğrultusunda farklı bir amaçla işlenmesi halinde yeniden açık rıza alınması gerekir mi?",2.229,False,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0
+q030,"Kişisel verilerin aktarılması halinde, aktarım yapılan alıcı veri sorumlusu tarafından kişisel verilerin korunması ve veri güvenliğinin sağlanması yükümlülükleri kime aittir?",2.609,False,0.0,0.0,0.5,0.5,0.5,0.5,0.5,0.5
+q031,"İlgili kişinin işlendikleri amaçla bağlantılı, sınırlı ve ölçülü olma ilkesi kapsamında veri sorumlusu tarafından işlendikleri amaçla bağlantılı, sınırlı ve ölçülü olma ilkesi kapsamında kişisel veri işleme faaliyetinde bulunulabilir mi?",4.132,False,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0
+q032,İlgili kişinin sağlık durumu veya hasta olma ihtimali hakkında elde edilen kişisel verilerin özel nitelikli kişisel veri niteliği taşıyıp taşımadığı.,2.291,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q033,Kişisel veri niteliğindeki özel nitelikli kişisel verilerin örnekleri nelerdir?,1.313,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q034,"Sağlık ve tıbbi teşhis, tedavi ve önleme amacıyla ilgili kişinin kişisel verilerinin işlenmesi hukuka uygun mudur?",2.011,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q035,Veri sorumlusunun kişisel verilerin işlenmesinin amaçlarını aydınlatma yükümlülüğü kapsamında ilgili kişiye bildirme zorunluluğu bulunmakta mıdır?,2.267,False,0.0,0.0,1.0,1.0,0.0,1.0,1.0,1.0
+q036,"İlgili kişinin, veri sorumlusu tarafından otomatik sistem vasıtasıyla alınan kararlarına itiraz etme ve bu kararın iptali talebi.",2.164,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q037,"İlgili kişinin, veri sorumlusu tarafından doğru ve gerektiğinde güncel olmayan kişisel verilerinin düzeltilmesini talep etme hakkı ve bu kapsamda izleyebileceği usul ve yollar nelerdir?",2.837,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q038,İlgili kişinin veri sorumlusuna başvurması halinde ücret talep edilip edilemeyeceği ve başvuru ücreti tutarı nedir?,1.912,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q039,İlgili kişinin veri sorumlusuna yapacağı başvuru talebinin telefon yoluyla yapılması geçerli midir?,1.442,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q040,Anonim hale getirilen kişisel verilerin işlenmesi faaliyeti kapsamında veri sorumlusunun idari yaptırım tabi olup olmadığı.,1.913,False,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0
+q041,"Veri sorumlusunun saklama politikası bulunmaması halinde, kişisel verilerin silinmesi veya yok edilmesi gereken süre nedir?",1.912,False,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q042,İlgili kişiye kişisel verilerinin işlenmesine ilişkin aydınlatma yükümlülüğünün yalnızca genel bilgilere yönelik bilgi verilmesi suretiyle yerine getirilmesi mümkün müdür?,2.521,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q043,Aydınlatma metninde mevzuat kapsamında kullanılan hukuki terimlerin yer alması hukuka uygun mudur?,1.977,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q044,Veri sorumlusuna kişisel verilerin işlenmesinde ilgili kişiye ait tüm yetkiler devredilmesi mümkün müdür?,1.787,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+q045,Kişisel verilerin güvenliğini sağlamak amacıyla veri sorumluları tarafından kullanılan teknik tedbirler kapsamında antivirüs yazılımı yeterli bir veri koruma mekanizması mıdır?,2.393,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q046,"Veri sorumlusunun, internet üzerinden gerçekleştirilebilecek muhtemel saldırı ve ihlalleri önlemek amacıyla veri güvenliğine ilişkin teknik ve idari tedbirleri nelerdir?",2.486,False,0.0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+q047,Veri sorumlusunun çalışanlarına yönelik kişisel veri işleme ve veri güvenliği eğitim yükümlülüğü nedir?,1.573,False,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+q048,Fiziksel ortamda bulunan kişisel verilerin muhafazası ve saklanması usul ve esasları nelerdir?,1.661,False,0.0,0.0,1.0,1.0,0.0,1.0,1.0,1.0
+q049,Özel nitelikli kişisel verilerin işlenmesi sürecinde veri sorumluları ve veri işleyenler tarafından alınması gereken teknik ve idari tedbirler nelerdir?,2.143,False,0.0,0.0,0.0,1.0,0.0,1.0,1.0,1.0
+q050,Veri sorumlusu tarafından hizmet sağlayıcı olan sürücülerden ilgili kişilerin ceza mahkûmiyeti ve sağlık verilerinin işlenmesi hukuka uygun mudur?,2.426,False,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0

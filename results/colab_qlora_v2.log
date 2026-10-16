@@ -1,0 +1,51 @@
+13:13:05 start: NVIDIA L4, commit 96f3afc, {'torch': '2.11.0+cu130', 'transformers': '5.18.0', 'peft': '0.21.1', 'bitsandbytes': '0.50.2'}, config {'lora_r': 16, 'lora_alpha': 32, 'lora_dropout': 0.05, 'lr': 0.0002, 'warmup_ratio': 0.03, 'epochs': 3, 'batch_size': 8, 'grad_accum': 2, 'max_len': 512, 'seed': 42}, pairs data/pairs_v2.jsonl
+13:13:05 === training v2 (meta-llama/Llama-3.1-8B-Instruct, data/pairs_v2.jsonl)
+13:16:45 trainable 41,943,040; 1284 train / 63 val; 243 steps; val loss before training 1.657
+13:18:42 epoch 1 step 10/243 loss 1.3078 lr 2.00e-04 1.9 min
+13:20:39 epoch 1 step 20/243 loss 1.1051 lr 1.99e-04 3.9 min
+13:22:35 epoch 1 step 30/243 loss 0.9505 lr 1.96e-04 5.8 min
+13:24:33 epoch 1 step 40/243 loss 0.9948 lr 1.91e-04 7.8 min
+13:26:32 epoch 1 step 50/243 loss 0.9717 lr 1.85e-04 9.8 min
+13:28:26 epoch 1 step 60/243 loss 0.8780 lr 1.77e-04 11.7 min
+13:30:23 epoch 1 step 70/243 loss 1.0214 lr 1.68e-04 13.6 min
+13:32:20 epoch 1 step 80/243 loss 0.9853 lr 1.57e-04 15.6 min
+13:33:02 start: NVIDIA L4, commit 96f3afc, {'torch': '2.11.0+cu130', 'transformers': '5.18.0', 'peft': '0.21.1', 'bitsandbytes': '0.50.2'}, config {'lora_r': 16, 'lora_alpha': 32, 'lora_dropout': 0.05, 'lr': 0.0002, 'warmup_ratio': 0.03, 'epochs': 3, 'batch_size': 8, 'grad_accum': 2, 'max_len': 512, 'seed': 42}, pairs data/pairs_v2.jsonl
+13:33:03 === training v2 (meta-llama/Llama-3.1-8B-Instruct, data/pairs_v2.jsonl)
+13:36:40 trainable 41,943,040; 1284 train / 63 val; 243 steps; val loss before training 1.657
+13:38:36 epoch 1 step 10/243 loss 1.3078 lr 2.00e-04 1.9 min
+13:40:33 epoch 1 step 20/243 loss 1.1051 lr 1.99e-04 3.9 min
+13:42:29 epoch 1 step 30/243 loss 0.9505 lr 1.96e-04 5.8 min
+13:44:26 epoch 1 step 40/243 loss 0.9948 lr 1.91e-04 7.8 min
+13:46:23 epoch 1 step 50/243 loss 0.9717 lr 1.85e-04 9.7 min
+13:48:17 epoch 1 step 60/243 loss 0.8780 lr 1.77e-04 11.6 min
+13:50:14 epoch 1 step 70/243 loss 1.0214 lr 1.68e-04 13.6 min
+13:52:10 epoch 1 step 80/243 loss 0.9853 lr 1.57e-04 15.5 min
+13:52:26 epoch 1 val loss 0.8651
+13:54:12 epoch 2 step 90/243 loss 0.5280 lr 1.46e-04 17.5 min
+13:56:08 epoch 2 step 100/243 loss 0.5603 lr 1.33e-04 19.5 min
+13:58:04 epoch 2 step 110/243 loss 0.6744 lr 1.21e-04 21.4 min
+14:00:01 epoch 2 step 120/243 loss 0.5994 lr 1.07e-04 23.3 min
+14:01:56 epoch 2 step 130/243 loss 0.5826 lr 9.40e-05 25.3 min
+14:03:52 epoch 2 step 140/243 loss 0.5418 lr 8.07e-05 27.2 min
+14:05:49 epoch 2 step 150/243 loss 0.5630 lr 6.78e-05 29.1 min
+14:07:44 epoch 2 step 160/243 loss 0.5985 lr 5.55e-05 31.1 min
+14:08:11 epoch 2 val loss 0.7976
+14:09:45 epoch 3 step 170/243 loss 0.3374 lr 4.40e-05 33.1 min
+14:11:43 epoch 3 step 180/243 loss 0.3383 lr 3.34e-05 35.1 min
+14:13:40 epoch 3 step 190/243 loss 0.2985 lr 2.41e-05 37.0 min
+14:15:36 epoch 3 step 200/243 loss 0.3453 lr 1.61e-05 38.9 min
+14:17:33 epoch 3 step 210/243 loss 0.2695 lr 9.57e-06 40.9 min
+14:19:30 epoch 3 step 220/243 loss 0.3094 lr 4.69e-06 42.8 min
+14:21:24 epoch 3 step 230/243 loss 0.2733 lr 1.51e-06 44.7 min
+14:23:19 epoch 3 step 240/243 loss 0.3116 lr 8.04e-08 46.6 min
+14:23:45 epoch 3 step 243/243 loss 0.3843 lr 0.00e+00 47.1 min
+14:23:59 epoch 3 val loss 0.8697
+14:24:00 lowest validation loss after epoch 2 (0.7976); that adapter is used
+14:24:00 trained in 47.33 min, val loss [1.657, 0.8651, 0.7976, 0.8697], best epoch 2, peak 16.01 GB
+14:24:10 === v2 dev rewrites
+14:26:09 rewrites_qlora_v2_llama3.1-8b_dev_v1.jsonl written; latency p50 2.232 s, truncated 0, peak 16.15 GB
+14:27:07 merged v2 saved to /content/merged_qlora_v2_llama3.1-8b
+14:27:07 === v1 test_v3 rewrites
+14:28:27 rewrites_qlora_v1_llama3.1-8b_test_v3_v1.jsonl written; latency p50 3.12 s, truncated 0, peak 16.15 GB
+14:35:16 qlora_v2_llama3.1-8b-Q6_K.gguf on Drive: 6.60 GB, llama.cpp 2a667032dc
+14:35:16 done in 62.2 min this session

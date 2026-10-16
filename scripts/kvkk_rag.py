@@ -22,6 +22,7 @@ HELDOUT = RAG / "eval/test_v2.jsonl"      # 20 questions; in this project, one r
 EVAL_SETS = (DEV, HELDOUT, RAG / "eval/test_v1.jsonl", RAG / "eval/abstention.jsonl", RAG / "eval/abstention_v2.jsonl")
 TEST_V3 = ROOT / "eval/test_v3.jsonl"     # 20 questions, this project's own (gate 7); one run only
 TEACHER_REWRITES = {"dev": RAG / "results/rewrites_v1.jsonl", "heldout": RAG / "results/rewrites_heldout_v2.jsonl"}
+TEACHER_TEST_V3 = RESULTS / "rewrites_teacher_test_v3_v1.jsonl"    # made in this project (gate 7), same teacher
 
 
 def corpus_texts() -> dict[str, str]:
